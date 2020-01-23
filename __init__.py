@@ -64,7 +64,6 @@ class C25kSkill(MycroftSkill):
     def on_websettings_changed(self):  # called when updating mycroft home page
         self._is_setup = False
         LOG.info("Websettings Changed!")
-        self.mqtt_init()
         self._is_setup = True
 
     def load_file(self, filename):  # loads the workout file json
