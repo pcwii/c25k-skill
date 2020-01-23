@@ -134,6 +134,8 @@ class C25kSkill(MycroftSkill):
             # Todo add workout canceled housekeeping here
         except Exception as e:
             LOG.info(Exception)  # if there is an error attempting the workout then here....
+            for each_thread in notification_threads:
+                each_thread.cancel()
 
     @intent_handler(IntentBuilder("BeginWorkoutIntent").require("RequestKeyword").require('WorkoutKeyword').build())
     def handle_begin_workout_intent(self, message):
