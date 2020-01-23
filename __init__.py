@@ -108,7 +108,7 @@ class C25kSkill(MycroftSkill):
                 for key in all_intervals[index]:
                     this_duration = all_intervals[index][key]
                 LOG.info("Workout Interval Length: " + str(this_duration) + " seconds")
-                LOG.info("Workout underway at step: " + str(index) + "/" + str(last_interval) +
+                LOG.info("Workout underway at step: " + str(index + 1) + "/" + str(last_interval) +
                          ", " + str(this_interval))
                 notification_threads = []  # reset notification threads
                 if index == (last_interval - 1):  # Check for the last interval
@@ -120,7 +120,7 @@ class C25kSkill(MycroftSkill):
                     notification_threads.append(Timer(this_duration, self.end_of_interval))
                 for each_thread in notification_threads:
                     each_thread.start()
-                LOG.info("waiting!")
+                LOG.info("waiting for interval to complete!")
                 while (index == self.interval_position) and not terminate():  # wait while this interval completes
                     #dummyValue = 1
                     time.sleep(1)
