@@ -73,7 +73,7 @@ class C25kSkill(MycroftSkill):
 
     def end_of_interval(self):
         LOG.info('Interval Completed!')
-        self.interval_postion += 1
+        self.interval_position += 1
 
     def end_of_workout(self):
         LOG.info('Workout Ended!')
@@ -120,7 +120,7 @@ class C25kSkill(MycroftSkill):
             for each_thread in notification_threads:
                 each_thread.start()
             LOG.info("waiting!")
-            while (index == self.interval_postion) and not terminate():  # wait while this interval completes
+            while (index == self.interval_position) and not terminate():  # wait while this interval completes
                 dummyValue = 1
                 # This is a do nothing loop while the workout proceeds
             if terminate():
