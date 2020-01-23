@@ -102,40 +102,40 @@ class C25kSkill(MycroftSkill):
         last_interval = len(all_intervals)
         LOG.info('Last Interval = ' + str(last_interval))
         interval_list = enumerate(all_intervals)
-        try:
-            for index, value in interval_list:
-                this_interval = json.dumps(all_intervals[index])
-                for key in all_intervals[index]:
-                    this_duration = all_intervals[index][key]
-                LOG.info(this_duration)
-                LOG.info("Workout underway at step: " + str(index) + ", " + this_interval)
-                notification_threads = []  # reset notification threads
-                if index == (last_interval - 1):  # Check for the last interval
-                    # Todo add Last interval threads here
-                    notification_threads.append(Timer(this_duration, self.end_of_workout))
-                    LOG.info('Last Interval workout almost completed!')
-                else:
-                    # Todo add motivation threads here
-                    notification_threads.append(Timer(this_duration, self.end_of_interval))
-                for each_thread in notification_threads:
-                    each_thread.start()
-                LOG.info("waiting!")
-                while (index == self.interval_postion) and not terminate():  # wait while this interval completes
-                    dummyValue = 1
-                    # This is a do nothing loop while the workout proceeds
-                if terminate():
-                    for each_thread in notification_threads:
-                        each_thread.cancel()
-                    if index != (last_interval - 1):
-                        LOG.info('Workout has been terminated!')
-                    else:
-                        LOG.info('Workout has been Completed!')
-                    break
-            # Todo add workout canceled housekeeping here
-        except Exception as e:
-            LOG.info(Exception)  # if there is an error attempting the workout then here....
+#        try:
+        for index, value in interval_list:
+            this_interval = json.dumps(all_intervals[index])
+            for key in all_intervals[index]:
+                this_duration = all_intervals[index][key]
+            LOG.info(this_duration)
+            LOG.info("Workout underway at step: " + str(index) + ", " + this_interval)
+            notification_threads = []  # reset notification threads
+            if index == (last_interval - 1):  # Check for the last interval
+                # Todo add Last interval threads here
+                notification_threads.append(Timer(this_duration, self.end_of_workout))
+                LOG.info('Last Interval workout almost completed!')
+            else:
+                # Todo add motivation threads here
+                notification_threads.append(Timer(this_duration, self.end_of_interval))
             for each_thread in notification_threads:
-                each_thread.cancel()
+                each_thread.start()
+            LOG.info("waiting!")
+            while (index == self.interval_postion) and not terminate():  # wait while this interval completes
+                dummyValue = 1
+                # This is a do nothing loop while the workout proceeds
+            if terminate():
+                for each_thread in notification_threads:
+                    each_thread.cancel()
+                if index != (last_interval - 1):
+                    LOG.info('Workout has been terminated!')
+                else:
+                    LOG.info('Workout has been Completed!')
+                break
+        # Todo add workout canceled housekeeping here
+#        except Exception as e:
+#           LOG.info(Exception)  # if there is an error attempting the workout then here....
+#           for each_thread in notification_threads:
+#                each_thread.cancel()
 
     @intent_handler(IntentBuilder("BeginWorkoutIntent").require("RequestKeyword").require('WorkoutKeyword').build())
     def handle_begin_workout_intent(self, message):
