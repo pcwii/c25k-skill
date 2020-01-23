@@ -129,9 +129,9 @@ class C25kSkill(MycroftSkill):
                     each_thread.cancel()
                     self.interval_position = 0
                 if index != (last_interval - 1):
-                    LOG.info('Workout has been terminated!')
+                    LOG.info('Workout was terminated!')
                 else:
-                    LOG.info('Workout has been Completed!')
+                    LOG.info('Workout was Completed!')
                 break
         # Todo add workout canceled housekeeping here
 #        except Exception as e:
