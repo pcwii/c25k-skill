@@ -107,8 +107,8 @@ class C25kSkill(MycroftSkill):
             this_interval = json.dumps(all_intervals[index])
             for key in all_intervals[index]:
                 this_duration = all_intervals[index][key]
-            LOG.info(this_duration)
-            LOG.info("Workout underway at step: " + str(index) + ", " + this_interval)
+            LOG.info("Workout Interval Length: " + this_duration + " seconds")
+            LOG.info("Workout underway at step: " + str(index) + "/" + str(last_interval)+", " + this_interval)
             notification_threads = []  # reset notification threads
             if index == (last_interval - 1):  # Check for the last interval
                 # Todo add Last interval threads here
