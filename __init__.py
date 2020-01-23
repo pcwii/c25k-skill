@@ -121,7 +121,8 @@ class C25kSkill(MycroftSkill):
                 each_thread.start()
             LOG.info("waiting!")
             while (index == self.interval_position) and not terminate():  # wait while this interval completes
-                dummyValue = 1
+                #dummyValue = 1
+                time.sleep(1)
                 # This is a do nothing loop while the workout proceeds
             if terminate():
                 for each_thread in notification_threads:
