@@ -108,7 +108,8 @@ class C25kSkill(MycroftSkill):
                 for key in all_intervals[index]:
                     this_duration = all_intervals[index][key]
                 LOG.info("Workout Interval Length: " + this_duration + " seconds")
-                LOG.info("Workout underway at step: " + str(index) + "/" + str(last_interval)+", " + this_interval)
+                LOG.info("Workout underway at step: " + str(index) + "/" + str(last_interval) +
+                         ", " + str(this_interval))
                 notification_threads = []  # reset notification threads
                 if index == (last_interval - 1):  # Check for the last interval
                     # Todo add Last interval threads here
@@ -135,7 +136,7 @@ class C25kSkill(MycroftSkill):
                     break
             # Todo add workout canceled housekeeping here
         except Exception as e:
-            LOG.info(Exception)  # if there is an error attempting the workout then here....
+            LOG.error(e)  # if there is an error attempting the workout then here....
             for each_thread in notification_threads:
                 each_thread.cancel()
 
