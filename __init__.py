@@ -127,6 +127,7 @@ class C25kSkill(MycroftSkill):
             if terminate():
                 for each_thread in notification_threads:
                     each_thread.cancel()
+                    self.interval_position = 0
                 if index != (last_interval - 1):
                     LOG.info('Workout has been terminated!')
                 else:
