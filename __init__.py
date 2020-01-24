@@ -102,11 +102,11 @@ class C25kSkill(MycroftSkill):
         last_interval = len(all_intervals)
         LOG.info('Last Interval = ' + str(last_interval))
         workout_duration = 0
-        interval_count = len(this_day["Intervals"]) - 2
-        for each_interval in this_day["Intervals"]:
+        for each_interval in this_day["intervals"]:
             for interval_type in each_interval:
                 workout_duration = workout_duration + each_interval[interval_type]
         workout_duration = int(workout_duration / 60)  # minutes
+        LOG.info("Workout Duration is: " + str(workout_duration))
         # wait_while_speaking()
         #self.speak_dialog('details_001', data={"week": this_week["Name"], "day": this_day["Name"]},
         #                  expect_response=False)
