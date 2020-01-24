@@ -120,7 +120,7 @@ class C25kSkill(MycroftSkill):
                     if this_duration >= 30:  # Motivators only added if interval length is greater than 30 seconds
                         notification_threads.append(Timer(int(this_duration/2), self.speak_motivation))
                         notification_threads.append(Timer(int(this_duration - 10), self.speak_transition))
-                    notification_threads.append(Timer(int(this_duration - 5), self.speak_countdown, 5))
+                    notification_threads.append(Timer(int(this_duration - 5), self.speak_countdown))
                     notification_threads.append(Timer(this_duration, self.end_of_interval))
                 for each_thread in notification_threads:
                     each_thread.start()
@@ -149,8 +149,8 @@ class C25kSkill(MycroftSkill):
     def speak_transition(self):
         self.speak_dialog('transitions', expect_response=False)
 
-    def speak_countdown(self, count):
-        for i in range(1, count+1):
+    def speak_countdown(self):
+        for i in range(1, 6):
             self.speak_dialog('countdown', data={"value": str(i)}, expect_response=False)
 
     @intent_handler(IntentBuilder("BeginWorkoutIntent").require("RequestKeyword").require('WorkoutKeyword').build())
