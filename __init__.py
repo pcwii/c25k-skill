@@ -117,7 +117,7 @@ class C25kSkill(MycroftSkill):
                     LOG.info('Last Interval workout almost completed!')
                 else:
                     # Todo add motivation threads here
-                    if this_duration >= 30:
+                    if this_duration >= 30:  # Motivators only added if interval length is greater than 30 seconds
                         notification_threads.append(Timer(int(this_duration/2), self.speak_motivation))
                         notification_threads.append(Timer(int(this_duration - 10), self.speak_transition))
                     notification_threads.append(Timer(this_duration, self.end_of_interval))
