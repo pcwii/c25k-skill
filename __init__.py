@@ -117,12 +117,13 @@ class C25kSkill(MycroftSkill):
                     LOG.info('Last Interval workout almost completed!')
                 else:
                     # Todo add motivation threads here
-                    notification_threads.append(Timer(this_duration, self.end_of_interval))
+                    if this_duration >= 30:
+                        notification_threads.append(Timer(int(this_duration/2), self.speak_motivation))
+                        notification_threads.append(Timer(int(this_duration - 10), self.speak_transition()))
                 for each_thread in notification_threads:
                     each_thread.start()
                 LOG.info("waiting for interval to complete!")
                 while (index == self.interval_position) and not terminate():  # wait while this interval completes
-                    #dummyValue = 1
                     time.sleep(1)
                     # This is a do nothing loop while the workout proceeds
                 if terminate():
@@ -139,6 +140,12 @@ class C25kSkill(MycroftSkill):
             LOG.error(e)  # if there is an error attempting the workout then here....
             for each_thread in notification_threads:
                 each_thread.cancel()
+
+    def speak_motivation(self):
+        self.speak_dialog('motivators', expect_response=False)
+
+    def speak_transition(self):
+        self.speak_dialog('transitions', expect_response=False)
 
     @intent_handler(IntentBuilder("BeginWorkoutIntent").require("RequestKeyword").require('WorkoutKeyword').build())
     def handle_begin_workout_intent(self, message):
