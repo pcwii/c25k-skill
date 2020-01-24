@@ -120,7 +120,7 @@ class C25kSkill(MycroftSkill):
                     if this_duration >= 30:  # Motivators only added if interval length is greater than 30 seconds
                         notification_threads.append(Timer(int(this_duration/2), self.speak_motivation))
                         notification_threads.append(Timer(int(this_duration - 10), self.speak_transition))
-                    notification_threads.append(Timer(int(this_duration - 5), self.speak_countdown ,5))
+                    notification_threads.append(Timer(int(this_duration - 5), self.speak_countdown, 5))
                     notification_threads.append(Timer(this_duration, self.end_of_interval))
                 for each_thread in notification_threads:
                     each_thread.start()
