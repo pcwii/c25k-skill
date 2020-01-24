@@ -183,6 +183,7 @@ class C25kSkill(MycroftSkill):
 
     @intent_handler(IntentBuilder("BeginWorkoutIntent").require("RequestKeyword").require('WorkoutKeyword').build())
     def handle_begin_workout_intent(self, message):
+        self.halt_all = False
         self.init_workout_thread()
         LOG.info("The workout has been Started")
 
@@ -192,7 +193,6 @@ class C25kSkill(MycroftSkill):
         self.halt_workout_thread()
         LOG.info("The workout has been Stopped")
         self.speak_dialog('shutdown', expect_response=False)
-
 
     def stop(self):
         pass
