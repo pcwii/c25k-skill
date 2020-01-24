@@ -134,11 +134,9 @@ class C25kSkill(MycroftSkill):
                     notification_threads.append(Timer(int(this_duration - 10), self.speak_transition))
                 notification_threads.append(Timer(int(this_duration - 5), self.speak_countdown))
                 if index == (last_interval - 1):  # Check for the last interval
-                    # Todo add Last interval threads here
                     notification_threads.append(Timer(this_duration, self.end_of_workout))
                     LOG.info('Last Interval workout almost completed!')
                 else:
-                    # Todo add motivation threads here
                     notification_threads.append(Timer(this_duration, self.end_of_interval))
                 for each_thread in notification_threads:
                     each_thread.start()
@@ -157,6 +155,7 @@ class C25kSkill(MycroftSkill):
                         LOG.info('Workout was terminated!')
                     else:
                         LOG.info('Workout was Completed!')
+                        self.speak_workout_completed()
                     break
             # Todo add workout canceled housekeeping here
         except Exception as e:
@@ -177,6 +176,8 @@ class C25kSkill(MycroftSkill):
             count_down -= 1
             time.sleep(1)
 
+    def speak_workout_completed(self):
+        self.speak_dialog('completed', expect_response=False)
 
     @intent_handler(IntentBuilder("BeginWorkoutIntent").require("RequestKeyword").require('WorkoutKeyword').build())
     def handle_begin_workout_intent(self, message):
@@ -187,6 +188,8 @@ class C25kSkill(MycroftSkill):
     def handle_stop_workout_intent(self, message):
         self.halt_workout_thread()
         LOG.info("The workout has been Stopped")
+        self.speak_dialog('shutdown', expect_response=False)
+
 
     def stop(self):
         pass
