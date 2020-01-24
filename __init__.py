@@ -119,7 +119,7 @@ class C25kSkill(MycroftSkill):
                     # Todo add motivation threads here
                     if this_duration >= 30:
                         notification_threads.append(Timer(int(this_duration/2), self.speak_motivation))
-                        notification_threads.append(Timer(int(this_duration - 10), self.speak_transition()))
+                        notification_threads.append(Timer(int(this_duration - 10), self.speak_transition))
                 for each_thread in notification_threads:
                     each_thread.start()
                 LOG.info("waiting for interval to complete!")
