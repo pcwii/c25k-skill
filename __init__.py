@@ -160,7 +160,7 @@ class C25kSkill(MycroftSkill):
         this_day = this_week["day"][day_num - 1]
         workout_duration = 0
         interval_count = len(this_day["Intervals"]) - 2
-        print(this_day)
+        LOG.info(this_day)
         for each_interval in this_day["Intervals"]:
             for interval_type in each_interval:
                 workout_duration = workout_duration + each_interval[interval_type]
