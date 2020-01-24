@@ -101,8 +101,17 @@ class C25kSkill(MycroftSkill):
         all_intervals = this_day["intervals"]
         last_interval = len(all_intervals)
         LOG.info('Last Interval = ' + str(last_interval))
+        workout_duration = 0
+        interval_count = len(this_day["Intervals"]) - 2
+        for each_interval in this_day["Intervals"]:
+            for interval_type in each_interval:
+                workout_duration = workout_duration + each_interval[interval_type]
+        workout_duration = int(workout_duration / 60)  # minutes
+        wait_while_speaking()
+        self.speak_dialog("Performing Workout for : " + this_week["Name"] + ", " + this_day["Name"])
+        self.speak_dialog("The Workout Duration is : " + str(workout_duration) + " Minutes")
+        self.speak_dialog("There are : " + str(interval_count) + " Intervals in this workout")
         interval_list = enumerate(all_intervals)
-        wait_for = self.speak_workout_details(active_schedule, this_week, this_day)
         try:
             for index, value in interval_list:
                 this_interval = json.dumps(all_intervals[index])
@@ -154,22 +163,6 @@ class C25kSkill(MycroftSkill):
         for i in range(6, 1):
             self.speak_dialog('countdown', data={"value": str(i)}, expect_response=False)
             time.sleep(1)
-
-    def speak_workout_details(self, json_data, week_num, day_num):
-        this_week = json_data["weeks"][week_num - 1]
-        this_day = this_week["day"][day_num - 1]
-        workout_duration = 0
-        interval_count = len(this_day["Intervals"]) - 2
-        LOG.info(this_day)
-        for each_interval in this_day["Intervals"]:
-            for interval_type in each_interval:
-                workout_duration = workout_duration + each_interval[interval_type]
-        workout_duration = int(workout_duration / 60)  # minutes
-        wait_while_speaking()
-        self.speak_dialog("Performing Workout for : " + this_week["Name"] + ", " + this_day["Name"])
-        self.speak_dialog("The Workout Duration is : " + str(workout_duration) + " Minutes")
-        self.speak_dialog("There are : " + str(interval_count) + " Intervals in this workout")
-        return "Update Complete"
 
     @intent_handler(IntentBuilder("BeginWorkoutIntent").require("RequestKeyword").require('WorkoutKeyword').build())
     def handle_begin_workout_intent(self, message):
