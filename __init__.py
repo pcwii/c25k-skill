@@ -157,6 +157,15 @@ class C25kSkill(MycroftSkill):
                         LOG.info('Workout was terminated!')
                     else:
                         LOG.info('Workout was Completed!')
+                        # update the day and week schedule for next run
+                        if self.progress_day == len(this_week["day"]):
+                            self.progress_day = 1
+                            if self.progress_week == len(active_schedule["weeks"]):
+                                self.progress_week = 1
+                            else:
+                                self.progress_week += 1
+                        else:
+                            self.progress_day += 1
                         self.speak_workout_completed()
                     break
             # Todo add workout canceled housekeeping here
@@ -164,6 +173,7 @@ class C25kSkill(MycroftSkill):
             LOG.error(e)  # if there is an error attempting the workout then here....
             for each_thread in notification_threads:
                 each_thread.cancel()
+
 
     def speak_motivation(self):
         self.speak_dialog('motivators', expect_response=False)
@@ -180,6 +190,10 @@ class C25kSkill(MycroftSkill):
 
     def speak_workout_completed(self):
         self.speak_dialog('completed', expect_response=False)
+
+    def update_workout(self,json_schedule, week_num, day_num):
+
+
 
     @intent_handler(IntentBuilder("BeginWorkoutIntent").require("RequestKeyword").require('WorkoutKeyword').build())
     def handle_begin_workout_intent(self, message):
