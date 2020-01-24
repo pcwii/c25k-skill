@@ -89,9 +89,13 @@ class C25kSkill(MycroftSkill):
         self.workout_mode.idThread.start()
 
     def halt_workout_thread(self):  # requests an end to the workout
-        self.workout_mode.id = 101
-        self.workout_mode.idStop = True
-        self.workout_mode.idThread.join()
+        try:
+            self.workout_mode.id = 101
+            self.workout_mode.idStop = True
+            self.workout_mode.idThread.join()
+        except Exception as e:
+            LOG.error(e)  # if there is an error attempting the workout then here....
+
 
     def do_workout_thread(self, my_id, terminate):  # This is an independant thread handling the workout
         LOG.info("Starting Workout with ID: " + str(my_id))
