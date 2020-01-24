@@ -59,7 +59,7 @@ class C25kSkill(MycroftSkill):
         location = os.path.dirname(os.path.realpath(__file__))
         self.schedule_location = location + '/./schedules/'  # get the current skill parent directory path
         self.interval_position = 0
-        self.progress_week = 1
+        self.progress_week = 9
         self.progress_day = 3
         self.halt_all = False
 

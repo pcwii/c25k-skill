@@ -740,13 +740,13 @@
           "Name":"Day 1",
           "intervals":[
             {
-              "Warm-Up":300
+              "Warm-Up":30
             },
             {
-              "Run":1800
+              "Run":18
             },
             {
-              "Cool-Down":300
+              "Cool-Down":30
             }
           ]
         },
@@ -768,13 +768,13 @@
           "Name":"Day 3",
           "intervals":[
             {
-              "Warm-Up":300
+              "Warm-Up":30
             },
             {
-              "Run":1800
+              "Run":18
             },
             {
-              "Cool-Down":300
+              "Cool-Down":30
             }
           ]
         }
