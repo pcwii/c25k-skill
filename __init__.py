@@ -174,7 +174,6 @@ class C25kSkill(MycroftSkill):
             for each_thread in notification_threads:
                 each_thread.cancel()
 
-
     def speak_motivation(self):
         self.speak_dialog('motivators', expect_response=False)
 
@@ -190,10 +189,6 @@ class C25kSkill(MycroftSkill):
 
     def speak_workout_completed(self):
         self.speak_dialog('completed', expect_response=False)
-
-    def update_workout(self,json_schedule, week_num, day_num):
-
-
 
     @intent_handler(IntentBuilder("BeginWorkoutIntent").require("RequestKeyword").require('WorkoutKeyword').build())
     def handle_begin_workout_intent(self, message):
