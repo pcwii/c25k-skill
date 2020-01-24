@@ -46,6 +46,7 @@ class C25kSkill(MycroftSkill):
         self.interval_position = 0
         self.progress_week = 1
         self.progress_day = 1
+        self.halt_all = False
 
     # This method loads the files needed for the skill's functioning, and
     # creates and registers each intent that the skill uses
@@ -60,6 +61,7 @@ class C25kSkill(MycroftSkill):
         self.interval_position = 0
         self.progress_week = 1
         self.progress_day = 1
+        self.halt_all = False
 
     def on_websettings_changed(self):  # called when updating mycroft home page
         self._is_setup = False
@@ -171,7 +173,7 @@ class C25kSkill(MycroftSkill):
 
     def speak_countdown(self):
         count_down = 5
-        while count_down:
+        while count_down and not self.halt_all:
             self.speak_dialog('countdown', data={"value": str(count_down)}, expect_response=False)
             count_down -= 1
             time.sleep(1)
@@ -186,6 +188,7 @@ class C25kSkill(MycroftSkill):
 
     @intent_handler(IntentBuilder('StopWorkoutIntent').require('StopKeyword').require('WorkoutKeyword').build())
     def handle_stop_workout_intent(self, message):
+        self.halt_all = True
         self.halt_workout_thread()
         LOG.info("The workout has been Stopped")
         self.speak_dialog('shutdown', expect_response=False)
