@@ -152,6 +152,7 @@ class C25kSkill(MycroftSkill):
     def speak_countdown(self):
         for i in range(1, 6):
             self.speak_dialog('countdown', data={"value": str(i)}, expect_response=False)
+            time.sleep(1)
 
     @intent_handler(IntentBuilder("BeginWorkoutIntent").require("RequestKeyword").require('WorkoutKeyword').build())
     def handle_begin_workout_intent(self, message):
