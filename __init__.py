@@ -108,9 +108,12 @@ class C25kSkill(MycroftSkill):
                 workout_duration = workout_duration + each_interval[interval_type]
         workout_duration = int(workout_duration / 60)  # minutes
         wait_while_speaking()
-        self.speak_dialog("Performing Workout for : " + this_week["Name"] + ", " + this_day["Name"])
-        self.speak_dialog("The Workout Duration is : " + str(workout_duration) + " Minutes")
-        self.speak_dialog("There are : " + str(interval_count) + " Intervals in this workout")
+        self.speak_dialog('details_001', data={"week": this_week["Name"], "day": this_day["Name"]},
+                          expect_response=False)
+        self.speak_dialog('details_002', data={"duration": str(workout_duration)},
+                          expect_response=False)
+        self.speak_dialog('details_003', data={"intervals": str(interval_count)},
+                          expect_response=False)
         interval_list = enumerate(all_intervals)
         try:
             for index, value in interval_list:
