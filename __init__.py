@@ -44,8 +44,8 @@ class C25kSkill(MycroftSkill):
         self.workout_mode = NewThread
         self.schedule_location = ""
         self.interval_position = 0
-        self.progress_week = 1
-        self.progress_day = 1
+        self.progress_week = 0
+        self.progress_day = 0
         self.halt_all = False
 
     # This method loads the files needed for the skill's functioning, and
@@ -60,7 +60,7 @@ class C25kSkill(MycroftSkill):
         self.schedule_location = location + '/./schedules/'  # get the current skill parent directory path
         self.interval_position = 0
         self.progress_week = 1
-        self.progress_day = 1
+        self.progress_day = 3
         self.halt_all = False
 
     def on_websettings_changed(self):  # called when updating mycroft home page
@@ -100,7 +100,8 @@ class C25kSkill(MycroftSkill):
 
     def do_workout_thread(self, my_id, terminate):  # This is an independant thread handling the workout
         LOG.info("Starting Workout with ID: " + str(my_id))
-        active_schedule = self.load_file(self.schedule_location + "c25k.json")
+        # active_schedule = self.load_file(self.schedule_location + "c25k.json")
+        active_schedule = self.load_file(self.schedule_location + "test_schedule.json")
         this_week = active_schedule["weeks"][self.progress_week - 1]
         this_day = this_week["day"][self.progress_day - 1]
         all_intervals = this_day["intervals"]
