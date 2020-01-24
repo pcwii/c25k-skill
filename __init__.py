@@ -96,7 +96,6 @@ class C25kSkill(MycroftSkill):
         except Exception as e:
             LOG.error(e)  # if there is an error attempting the workout then here....
 
-
     def do_workout_thread(self, my_id, terminate):  # This is an independant thread handling the workout
         LOG.info("Starting Workout with ID: " + str(my_id))
         active_schedule = self.load_file(self.schedule_location + "c25k.json")
@@ -109,8 +108,7 @@ class C25kSkill(MycroftSkill):
         for each_interval in this_day["intervals"]:
             for interval_type in each_interval:
                 workout_duration = workout_duration + each_interval[interval_type]
-        # workout_duration = int(workout_duration / 60)  # minutes
-        LOG.info("Workout Duration is: " + str(workout_duration) + ", Minutes")
+        workout_duration = int(workout_duration / 60)  # minutes
         wait_while_speaking()
         self.speak_dialog('details_001', data={"week": this_week["Name"], "day": this_day["Name"]},
                           expect_response=False)
@@ -124,24 +122,30 @@ class C25kSkill(MycroftSkill):
                 this_interval = json.dumps(all_intervals[index])
                 for key in all_intervals[index]:
                     this_duration = all_intervals[index][key]
+                    LOG.info("Workout Type: " + key)
+                    workout_type = key
                 LOG.info("Workout Interval Length: " + str(this_duration) + " seconds")
                 LOG.info("Workout underway at step: " + str(index + 1) + "/" + str(last_interval) +
                          ", " + str(this_interval))
                 notification_threads = []  # reset notification threads
+                # Insert general workout prompts here
+                if this_duration >= 30:  # Motivators only added if interval length is greater than 30 seconds
+                    notification_threads.append(Timer(int(this_duration / 2), self.speak_motivation))
+                    notification_threads.append(Timer(int(this_duration - 10), self.speak_transition))
+                notification_threads.append(Timer(int(this_duration - 5), self.speak_countdown))
                 if index == (last_interval - 1):  # Check for the last interval
                     # Todo add Last interval threads here
                     notification_threads.append(Timer(this_duration, self.end_of_workout))
                     LOG.info('Last Interval workout almost completed!')
                 else:
                     # Todo add motivation threads here
-                    if this_duration >= 30:  # Motivators only added if interval length is greater than 30 seconds
-                        notification_threads.append(Timer(int(this_duration/2), self.speak_motivation))
-                        notification_threads.append(Timer(int(this_duration - 10), self.speak_transition))
-                    notification_threads.append(Timer(int(this_duration - 5), self.speak_countdown))
                     notification_threads.append(Timer(this_duration, self.end_of_interval))
                 for each_thread in notification_threads:
                     each_thread.start()
                 LOG.info("waiting for interval to complete!")
+                self.speak_dialog('details_004', data={"interval_length": str(this_duration),
+                                                       "interval_type": workout_type},
+                                  expect_response=False)
                 while (index == self.interval_position) and not terminate():  # wait while this interval completes
                     time.sleep(1)
                     # This is a do nothing loop while the workout proceeds
@@ -172,6 +176,7 @@ class C25kSkill(MycroftSkill):
             self.speak_dialog('countdown', data={"value": str(count_down)}, expect_response=False)
             count_down -= 1
             time.sleep(1)
+
 
     @intent_handler(IntentBuilder("BeginWorkoutIntent").require("RequestKeyword").require('WorkoutKeyword').build())
     def handle_begin_workout_intent(self, message):
