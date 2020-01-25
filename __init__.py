@@ -62,9 +62,9 @@ class C25kSkill(MycroftSkill):
         location = os.path.dirname(os.path.realpath(__file__))
         self.schedule_location = location + '/./schedules/'  # get the current skill parent directory path
         self.interval_position = 0
-        self.progress_week = 9
-        self.progress_day = 3
-        self.workout_file = ""
+        # self.progress_week = 9
+        # self.progress_day = 3
+        # self.workout_file = ""
         self.halt_all = False
 
     def on_websettings_changed(self):  # called when updating mycroft home page
