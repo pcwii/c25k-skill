@@ -113,6 +113,7 @@ class C25kSkill(MycroftSkill):
         LOG.info("Starting Workout with ID: " + str(my_id))
         # active_schedule = self.load_file(self.schedule_location + "c25k.json")
         active_schedule = self.load_file(self.schedule_location + self.workout_file)  # "test_schedule.json")
+        schedule_name = active_schedule["Name"]
         this_week = active_schedule["weeks"][self.progress_week - 1]
         this_day = this_week["day"][self.progress_day - 1]
         all_intervals = this_day["intervals"]
@@ -124,6 +125,8 @@ class C25kSkill(MycroftSkill):
                 workout_duration = workout_duration + each_interval[interval_type]
         workout_duration = int(workout_duration / 60)  # minutes
         wait_while_speaking()
+        self.speak_dialog('details_000', data={"name": schedule_name},
+                          expect_response=False)
         self.speak_dialog('details_001', data={"week": this_week["Name"], "day": this_day["Name"]},
                           expect_response=False)
         self.speak_dialog('details_002', data={"duration": str(workout_duration)},
