@@ -1,7 +1,6 @@
 {
- "name": "C25K Workout Skill",
- "color": "#22a7f0",
- "skillMetadata": {
+    "name": "C25K Workout Skill",
+    "skillMetadata": {
         "sections": [
             {
                 "name": "Configuration",
