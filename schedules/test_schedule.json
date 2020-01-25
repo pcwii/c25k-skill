@@ -11,52 +11,22 @@
               "Warm-Up":30
             },
             {
-              "Run":10
+              "Run":6
             },
             {
-              "Walk":5
+              "Walk":9
             },
             {
-              "Run":10
+              "Run":6
             },
             {
-              "Walk":5
+              "Walk":9
             },
             {
-              "Run":10
+              "Run":6
             },
             {
-              "Walk":5
-            },
-            {
-              "Run":10
-            },
-            {
-              "Walk":5
-            },
-            {
-              "Run":10
-            },
-            {
-              "Walk":5
-            },
-            {
-              "Run":10
-            },
-            {
-              "Walk":5
-            },
-            {
-              "Run":10
-            },
-            {
-              "Walk":5
-            },
-            {
-              "Run":10
-            },
-            {
-              "Walk":5
+              "Walk":9
             },
             {
               "Cool-Down":30
@@ -67,58 +37,28 @@
           "Name":"Day 2",
           "intervals":[
             {
-              "Warm-Up":300
+              "Warm-Up":30
             },
             {
-              "Run":60
+              "Run":6
             },
             {
-              "Walk":90
+              "Walk":9
             },
             {
-              "Run":60
+              "Run":6
             },
             {
-              "Walk":90
+              "Walk":9
             },
             {
-              "Run":60
+              "Run":6
             },
             {
-              "Walk":90
+              "Walk":9
             },
             {
-              "Run":60
-            },
-            {
-              "Walk":90
-            },
-            {
-              "Run":60
-            },
-            {
-              "Walk":90
-            },
-            {
-              "Run":60
-            },
-            {
-              "Walk":90
-            },
-            {
-              "Run":60
-            },
-            {
-              "Walk":90
-            },
-            {
-              "Run":60
-            },
-            {
-              "Walk":90
-            },
-            {
-              "Cool-Down":300
+              "Cool-Down":30
             }
           ]
         },
