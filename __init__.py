@@ -1,3 +1,5 @@
+# https://github.com/MycroftAI/skill-npr-news/blob/0d4134fd00d9bade433ad3e3cadf5ca1cd594f8c/settingsmeta.json
+
 from os.path import dirname
 from adapt.intent import IntentBuilder
 from mycroft.skills.core import MycroftSkill, intent_handler, intent_file_handler
@@ -47,6 +49,7 @@ class C25kSkill(MycroftSkill):
         self.progress_week = 0
         self.progress_day = 0
         self.halt_all = False
+        self.workout_file = ""
 
     # This method loads the files needed for the skill's functioning, and
     # creates and registers each intent that the skill uses
@@ -61,12 +64,20 @@ class C25kSkill(MycroftSkill):
         self.interval_position = 0
         self.progress_week = 9
         self.progress_day = 3
+        self.workout_file = ""
         self.halt_all = False
 
     def on_websettings_changed(self):  # called when updating mycroft home page
         self._is_setup = False
         LOG.info("Websettings Changed!")
+        self.progress_week = self.settings.get("progress_week", 1)
+        self.progress_day = self.settings.get("progress_day", 1)
+        self.workout_file = self.settings.get("workout_file", "c25k.json")
+        # self.settings["progress_week"] = 1
+        # self.settings["progress_day"] = 1
+
         self._is_setup = True
+
 
     def load_file(self, filename):  # loads the workout file json
         with open(filename) as json_file:
@@ -101,7 +112,7 @@ class C25kSkill(MycroftSkill):
     def do_workout_thread(self, my_id, terminate):  # This is an independant thread handling the workout
         LOG.info("Starting Workout with ID: " + str(my_id))
         # active_schedule = self.load_file(self.schedule_location + "c25k.json")
-        active_schedule = self.load_file(self.schedule_location + "test_schedule.json")
+        active_schedule = self.load_file(self.schedule_location + self.workout_file)  # "test_schedule.json")
         this_week = active_schedule["weeks"][self.progress_week - 1]
         this_day = this_week["day"][self.progress_day - 1]
         all_intervals = this_day["intervals"]
@@ -163,10 +174,13 @@ class C25kSkill(MycroftSkill):
                             self.progress_day = 1
                             if self.progress_week == len(active_schedule["weeks"]):
                                 self.progress_week = 1
+
                             else:
                                 self.progress_week += 1
+                                self.settings["progress_week"] = self.progress_week
                         else:
                             self.progress_day += 1
+                            self.settings["progress_day"] = self.progress_day
                         self.speak_workout_completed()
                     break
             # Todo add workout canceled housekeeping here

@@ -1,0 +1,36 @@
+{
+ "name": "C25K Workout Skill",
+ "color": "#22a7f0",
+ "skillMetadata": {
+        "sections": [
+            {
+                "name": "Configuration",
+                "fields": [
+                    {
+                        "type": "label",
+                        "label": "The default workout file is c25k.json or test_schedule.json."
+                    },
+                    {
+                        "name": "workout_file",
+                        "type": "text",
+                        "label": "Custom Workout File:",
+                        "value": "c25k.json"
+                    },
+                    {
+                        "name": "progress_week",
+                        "type": "Number",
+                        "label": "Currently Active Week",
+                        "value": 1
+                    },
+                    {
+                        "name": "progress_day",
+                        "type": "Number",
+                        "label": "Active Workout Day",
+                        "value": 1
+                    }
+                ]
+            }
+        ]
+    }
+
+}
