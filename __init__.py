@@ -180,10 +180,10 @@ class C25kSkill(MycroftSkill):
 
                             else:
                                 self.progress_week += 1
-                                self.settings.set["progress_week"] = self.progress_week
+                                self.settings["progress_week"] = self.progress_week
                         else:
                             self.progress_day += 1
-                            self.settings.set["progress_day"] = self.progress_day
+                            self.settings["progress_day"] = self.progress_day
                         self.speak_workout_completed()
                     break
             # Todo add workout canceled housekeeping here
