@@ -17,13 +17,13 @@
                     },
                     {
                         "name": "progress_week",
-                        "type": "Number",
+                        "type": "number",
                         "label": "Currently Active Week",
                         "value": 1
                     },
                     {
                         "name": "progress_day",
-                        "type": "Number",
+                        "type": "number",
                         "label": "Active Workout Day",
                         "value": 1
                     }
