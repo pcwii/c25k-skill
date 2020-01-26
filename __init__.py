@@ -11,13 +11,13 @@ from mycroft.api import DeviceApi
 from mycroft.audio import wait_while_speaking, play_mp3
 
 import json
-import random
-import datetime
+# import random
+# import datetime
 import time
 import threading
-import sys
+# import sys
 import os
-from pathlib import Path
+# from pathlib import Path
 from threading import Timer
 
 
@@ -26,6 +26,7 @@ class NewThread:
     idStop = False
     next_interval = 0
     idThread = threading.Thread
+
 
 __author__ = 'PCWii'
 
@@ -76,9 +77,7 @@ class C25kSkill(MycroftSkill):
         self.workout_file = self.settings.get("workout_file", "c25k.json")
         # self.settings["progress_week"] = 1
         # self.settings["progress_day"] = 1
-
         self._is_setup = True
-
 
     def load_file(self, filename):  # loads the workout file json
         with open(filename) as json_file:
@@ -244,8 +243,7 @@ class C25kSkill(MycroftSkill):
         self.halt_all = True
         self.halt_workout_thread()
         LOG.info("Workout change requested")
-        #self.speak_dialog('shutdown', expect_response=False)
-
+        # self.speak_dialog('shutdown', expect_response=False)
 
     def stop(self):
         pass
