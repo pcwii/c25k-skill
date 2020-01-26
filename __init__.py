@@ -8,7 +8,8 @@ from mycroft.util.log import getLogger
 from mycroft.util.log import LOG
 from mycroft.skills.context import adds_context, removes_context
 from mycroft.api import DeviceApi
-from mycroft.audio import wait_while_speaking, play_mp3
+from mycroft.skills.audioservice import AudioService
+from mycroft.audio import wait_while_speaking\
 
 import json
 # import random
@@ -52,12 +53,14 @@ class C25kSkill(MycroftSkill):
         self.progress_day = 0
         self.halt_all = False
         self.workout_file = ""
+        self.audio_service = ""
 
     # This method loads the files needed for the skill's functioning, and
     # creates and registers each intent that the skill uses
     def initialize(self):
         self.load_data_files(dirname(__file__))
         #  Check and then monitor for credential changes
+        self.audio_service = AudioService(self.bus)
         self.settings.set_changed_callback(self.on_websettings_changed)
         self.on_websettings_changed()
         # Todo Add / update the following to the websettings for tracking
@@ -170,7 +173,7 @@ class C25kSkill(MycroftSkill):
                                                        "interval_type": workout_type},
                                   expect_response=False)
                 interval_start_mp3 = "ding_001.mp3"
-                play_mp3(join(dirname(__file__), "soundclips", interval_start_mp3))
+                self.audio_service.play(join(dirname(__file__), "soundclips", interval_start_mp3))
                 while (index == self.interval_position) and not terminate():  # wait while this interval completes
                     time.sleep(1)
                     # This is a do nothing loop while the workout proceeds
