@@ -1,13 +1,14 @@
 # https://github.com/MycroftAI/skill-npr-news/blob/0d4134fd00d9bade433ad3e3cadf5ca1cd594f8c/settingsmeta.json
 
-from os.path import dirname
+from os.path import dirname, join
+
 from adapt.intent import IntentBuilder
 from mycroft.skills.core import MycroftSkill, intent_handler, intent_file_handler
 from mycroft.util.log import getLogger
 from mycroft.util.log import LOG
-from mycroft.audio import wait_while_speaking
 from mycroft.skills.context import adds_context, removes_context
 from mycroft.api import DeviceApi
+from mycroft.audio import wait_while_speaking, play_mp3
 
 import json
 import random
@@ -127,10 +128,13 @@ class C25kSkill(MycroftSkill):
         wait_while_speaking()
         self.speak_dialog('details_000', data={"name": schedule_name},
                           expect_response=False)
+        wait_while_speaking()
         self.speak_dialog('details_001', data={"week": this_week["Name"], "day": this_day["Name"]},
                           expect_response=False)
+        wait_while_speaking()
         self.speak_dialog('details_002', data={"duration": str(workout_duration)},
                           expect_response=False)
+        wait_while_speaking()
         self.speak_dialog('details_003', data={"intervals": str(last_interval)},
                           expect_response=False)
         interval_list = enumerate(all_intervals)
@@ -157,10 +161,12 @@ class C25kSkill(MycroftSkill):
                     notification_threads.append(Timer(this_duration, self.end_of_interval))
                 for each_thread in notification_threads:
                     each_thread.start()
-                LOG.info("waiting for interval to complete!")
+                wait_while_speaking()
                 self.speak_dialog('details_004', data={"interval_length": str(this_duration),
                                                        "interval_type": workout_type},
                                   expect_response=False)
+                interval_start_mp3 = "ding_001.mp3"
+                play_mp3(join(dirname(__file__), "soundclips", interval_start_mp3))
                 while (index == self.interval_position) and not terminate():  # wait while this interval completes
                     time.sleep(1)
                     # This is a do nothing loop while the workout proceeds
