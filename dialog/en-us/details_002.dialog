@@ -1,2 +1,3 @@
 The Workout Duration is, {{duration}}, Minutes
 This workout is, {{duration}}, minutes long
+only, {{duration}}, minutes and you are done

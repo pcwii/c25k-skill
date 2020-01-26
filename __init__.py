@@ -153,6 +153,11 @@ class C25kSkill(MycroftSkill):
                 if this_duration >= 30:  # Motivators only added if interval length is greater than 30 seconds
                     notification_threads.append(Timer(int(this_duration / 2), self.speak_mid_point))
                     notification_threads.append(Timer(int(this_duration - 10), self.speak_transition))
+                if this_duration >= 120:  # Motivators only added if interval length is greater than 2 minutes seconds
+                    first_quarter = int(this_duration / 4)
+                    last_quarter = first_quarter * 3
+                    notification_threads.append(Timer(int(first_quarter), self.speak_first_quarter))
+                    notification_threads.append(Timer(int(last_quarter), self.speak_last_quarter))
                 notification_threads.append(Timer(int(this_duration - 5), self.speak_countdown))
                 if index == (last_interval - 1):  # Check for the last interval
                     notification_threads.append(Timer(this_duration, self.end_of_workout))
@@ -207,7 +212,6 @@ class C25kSkill(MycroftSkill):
     def speak_last_quarter(self):
         self.speak_dialog('last_quarter', expect_response=False)
 
-
     def speak_transition(self):
         self.speak_dialog('transitions', expect_response=False)
 
@@ -233,6 +237,15 @@ class C25kSkill(MycroftSkill):
         self.halt_workout_thread()
         LOG.info("The workout has been Stopped")
         self.speak_dialog('shutdown', expect_response=False)
+
+    @intent_handler(IntentBuilder('ChangeWorkoutIntent').require('ChangeKeyword').require('WorkoutKeyword').
+                    optionally("WeekKeyword").optionally("DayKeyword").build())
+    def handle_change_workout_intent(self, message):
+        self.halt_all = True
+        self.halt_workout_thread()
+        LOG.info("Workout change requested")
+        #self.speak_dialog('shutdown', expect_response=False)
+
 
     def stop(self):
         pass
