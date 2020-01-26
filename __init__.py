@@ -151,7 +151,7 @@ class C25kSkill(MycroftSkill):
                 notification_threads = []  # reset notification threads
                 # Insert general workout prompts here
                 if this_duration >= 30:  # Motivators only added if interval length is greater than 30 seconds
-                    notification_threads.append(Timer(int(this_duration / 2), self.speak_motivation))
+                    notification_threads.append(Timer(int(this_duration / 2), self.speak_mid_point))
                     notification_threads.append(Timer(int(this_duration - 10), self.speak_transition))
                 notification_threads.append(Timer(int(this_duration - 5), self.speak_countdown))
                 if index == (last_interval - 1):  # Check for the last interval
@@ -198,8 +198,15 @@ class C25kSkill(MycroftSkill):
             for each_thread in notification_threads:
                 each_thread.cancel()
 
-    def speak_motivation(self):
-        self.speak_dialog('motivators', expect_response=False)
+    def speak_mid_point(self):
+        self.speak_dialog('mid_point', expect_response=False)
+
+    def speak_first_quarter(self):
+        self.speak_dialog('first_quarter', expect_response=False)
+
+    def speak_last_quarter(self):
+        self.speak_dialog('last_quarter', expect_response=False)
+
 
     def speak_transition(self):
         self.speak_dialog('transitions', expect_response=False)
