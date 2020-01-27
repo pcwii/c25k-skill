@@ -252,14 +252,15 @@ class C25kSkill(MycroftSkill):
         self.halt_all = True
         self.halt_workout_thread()
         LOG.info("Workout change requested")
-        matches = re.search(r'(?P<weeks>week \d+)', voice_payload)
-        if matches:
-            utt_week = re.findall("\d+", matches.group('weeks'))[0]
+        week_matches = re.search(r'(?P<weeks>week \d+)', voice_payload)
+        if week_matches:
+            utt_week = re.findall("\d+", week_matches.group('weeks'))[0]
             LOG.info("Caught week: " + str(utt_week))
-        matches = re.search(r'(?P<days>day \d+)', voice_payload)
-        if matches:
-            utt_day = re.findall("\d+", matches.group('days'))[0]
+        day_matches = re.search(r'(?P<days>day \d+)', voice_payload)
+        if day_matches:
+            utt_day = re.findall("\d+", day_matches.group('days'))[0]
             LOG.info("Caught day: " + str(utt_day))
+        # todo add conversation if week / day is not included in the utterance
 
     def stop(self):
         pass
