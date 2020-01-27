@@ -255,6 +255,7 @@ class C25kSkill(MycroftSkill):
         LOG.info("Workout change requested")
         regex_string = r"(?P<weeks>week \d+)?(?P<days>day \d+)?"
         matches = re.search(regex_string, voice_payload)
+        LOG.info(str(matches))
         if message.data.get("WeekKeyword"):
             utt_week = re.findall(r'\d+', matches.group('weeks'))
             LOG.info("Caught week: " + str(utt_week))
