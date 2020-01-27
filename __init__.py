@@ -257,10 +257,10 @@ class C25kSkill(MycroftSkill):
         matches = re.search(regex_string, voice_payload)
         LOG.info(str(matches))
         if message.data.get("WeekKeyword"):
-            utt_week = re.findall(r'\d+', matches.group('weeks'))
+            utt_week = matches.group('weeks')
             LOG.info("Caught week: " + str(utt_week))
         if message.data.get("DayKeyword"):
-            utt_day = re.findall(r'\d+', matches.group('days'))
+            utt_day = matches.group('days')
             LOG.info("Caught day: " + str(utt_day))
 
     def stop(self):
