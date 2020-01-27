@@ -12,6 +12,7 @@ from mycroft.skills.audioservice import AudioService
 from mycroft.audio import wait_while_speaking\
 
 import json
+import re
 # import random
 # import datetime
 import time
@@ -86,6 +87,12 @@ class C25kSkill(MycroftSkill):
         with open(filename) as json_file:
             data = json.load(json_file)
             return data
+
+    def extract_session(self, message_str):
+        regex_string = r"(?P<weeks>week \d+)?(?P<days>day \d+)?"
+        matches = re.search(regex_string, message_str)
+        utt_week = re.findall(r'\d+', matches.group('weeks'))
+        utt_day = re.findall(r'\d+', matches.group('days'))
 
     def end_of_interval(self):
         LOG.info('Interval Completed!')
@@ -199,7 +206,6 @@ class C25kSkill(MycroftSkill):
                             self.settings["progress_day"] = self.progress_day
                         self.speak_workout_completed()
                     break
-            # Todo add workout canceled housekeeping here
         except Exception as e:
             LOG.error(e)  # if there is an error attempting the workout then here....
             for each_thread in notification_threads:
@@ -243,10 +249,18 @@ class C25kSkill(MycroftSkill):
     @intent_handler(IntentBuilder('ChangeWorkoutIntent').require('ChangeKeyword').require('WorkoutKeyword').
                     optionally("WeekKeyword").optionally("DayKeyword").build())
     def handle_change_workout_intent(self, message):
+        voice_payload = str(message.data.get('utterance'))
         self.halt_all = True
         self.halt_workout_thread()
         LOG.info("Workout change requested")
-        # self.speak_dialog('shutdown', expect_response=False)
+        regex_string = r"(?P<weeks>week \d+)?(?P<days>day \d+)?"
+        matches = re.search(regex_string, voice_payload)
+        if message.data.get("WeekKeyword"):
+            utt_week = re.findall(r'\d+', matches.group('weeks'))
+            LOG.info("Caught week: " + str(utt_week))
+        if message.data.get("DayKeyword"):
+            utt_day = re.findall(r'\d+', matches.group('days'))
+            LOG.info("Caught day: " + str(utt_day))
 
     def stop(self):
         pass
