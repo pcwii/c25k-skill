@@ -251,7 +251,7 @@ class C25kSkill(MycroftSkill):
     def handle_change_workout_intent(self, message):
         voice_payload = str(message.data.get('utterance'))
         self.halt_all = True
-        self.halt_workout_thread(self)
+        self.halt_workout_thread()
         LOG.info("Workout change requested")
         regex_string = r"(?P<weeks>week \d+)?(?P<days>day \d+)?"
         matches = re.search(regex_string, voice_payload)
