@@ -246,8 +246,7 @@ class C25kSkill(MycroftSkill):
         LOG.info("The workout has been Stopped")
         self.speak_dialog('shutdown', expect_response=False)
 
-    @intent_handler(IntentBuilder('ChangeWorkoutIntent').require('ChangeKeyword').require('WorkoutKeyword').
-                    optionally("WeekKeyword").optionally("DayKeyword").build())
+    @intent_handler(IntentBuilder('ChangeWorkoutIntent').require('ChangeKeyword').require('WorkoutKeyword').build())
     def handle_change_workout_intent(self, message):
         voice_payload = str(message.data.get('utterance'))
         self.halt_all = True
