@@ -253,14 +253,12 @@ class C25kSkill(MycroftSkill):
         self.halt_all = True
         self.halt_workout_thread()
         LOG.info("Workout change requested")
-        if message.data.get("WeekKeyword"):
-            matches = re.search(r'(?P<weeks>week \d+)', voice_payload)
-            utt_week = re.findall("\d+", matches.group('weeks'))[0]
-            LOG.info("Caught week: " + str(utt_week))
-        if message.data.get("DayKeyword"):
-            matches = re.search(r'(?P<days>day \d+)', voice_payload)
-            utt_day = re.findall("\d+", matches.group('days'))[0]
-            LOG.info("Caught week: " + str(utt_day))
+        matches = re.search(r'(?P<weeks>week \d+)', voice_payload)
+        utt_week = re.findall("\d+", matches.group('weeks'))[0]
+        LOG.info("Caught week: " + str(utt_week))
+        matches = re.search(r'(?P<days>day \d+)', voice_payload)
+        utt_day = re.findall("\d+", matches.group('days'))[0]
+        LOG.info("Caught day: " + str(utt_day))
 
     def stop(self):
         pass
