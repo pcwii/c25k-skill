@@ -159,6 +159,9 @@ class C25kSkill(MycroftSkill):
                          ", " + str(this_interval))
                 notification_threads = []  # reset notification threads
                 # Insert general workout prompts here
+                # Each workout prompt below is a separate thread timer
+                if this_duration >= 10:  # Motivators only added if interval length is greater than 10 seconds
+                    notification_threads.append(Timer(int(this_duration - 6), self.speak_countdown))
                 if this_duration >= 30:  # Motivators only added if interval length is greater than 30 seconds
                     notification_threads.append(Timer(int(this_duration / 2), self.speak_mid_point))
                     notification_threads.append(Timer(int(this_duration - 10), self.speak_transition))
@@ -167,7 +170,6 @@ class C25kSkill(MycroftSkill):
                     last_quarter = first_quarter * 3
                     notification_threads.append(Timer(int(first_quarter), self.speak_first_quarter))
                     notification_threads.append(Timer(int(last_quarter), self.speak_last_quarter))
-                notification_threads.append(Timer(int(this_duration - 5), self.speak_countdown))
                 if index == (last_interval - 1):  # Check for the last interval
                     notification_threads.append(Timer(this_duration, self.end_of_workout))
                     LOG.info('Last Interval workout almost completed!')
@@ -210,6 +212,7 @@ class C25kSkill(MycroftSkill):
             LOG.error(e)  # if there is an error attempting the workout then here....
             for each_thread in notification_threads:
                 each_thread.cancel()
+                each_thread.
 
     def speak_mid_point(self):
         self.speak_dialog('mid_point', expect_response=False)
@@ -238,6 +241,17 @@ class C25kSkill(MycroftSkill):
         self.halt_all = False
         self.init_workout_thread()
         LOG.info("The workout has been Started")
+
+    @intent_handler(IntentBuilder('PauseWorkoutIntent').require('PauseKeyword').require('WorkoutKeyword').build())
+    def handle_pause_workout_intent(self, message):
+        LOG.info("The workout has been Paused")
+        self.speak_dialog('pause', expect_response=False)
+
+    @intent_handler(IntentBuilder('ResumeWorkoutIntent').require('ResumeKeyword').require('WorkoutKeyword').build())
+    def handle_resume_workout_intent(self, message):
+        LOG.info("The workout has been re-started")
+        self.speak_dialog('resume', expect_response=False)
+
 
     @intent_handler(IntentBuilder('StopWorkoutIntent').require('StopKeyword').require('WorkoutKeyword').build())
     def handle_stop_workout_intent(self, message):
