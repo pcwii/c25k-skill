@@ -235,23 +235,13 @@ class C25kSkill(MycroftSkill):
         if request_change:
             return "none"
         else:
-            return utt_week, utt_day
+            return str(utt_week, utt_day)
 
     @intent_handler(IntentBuilder("BeginWorkoutIntent").require("RequestKeyword").require('WorkoutKeyword').build())
     def handle_begin_workout_intent(self, message):
         self.halt_all = False
         self.init_workout_thread()
         LOG.info("The workout has been Started")
-
-#    @intent_handler(IntentBuilder('PauseWorkoutIntent').require('PauseKeyword').require('WorkoutKeyword').build())
-#    def handle_pause_workout_intent(self, message):
-#        LOG.info("The workout has been Paused")
-#        self.speak_dialog('pause', expect_response=False)
-
-#    @intent_handler(IntentBuilder('ResumeWorkoutIntent').require('ResumeKeyword').require('WorkoutKeyword').build())
-#    def handle_resume_workout_intent(self, message):
-#        LOG.info("The workout has been re-started")
-#        self.speak_dialog('resume', expect_response=False)
 
     @intent_handler(IntentBuilder('StopWorkoutIntent').require('StopKeyword').require('WorkoutKeyword').build())
     def handle_stop_workout_intent(self, message):

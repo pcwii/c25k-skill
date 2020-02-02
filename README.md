@@ -13,12 +13,15 @@ Other workout json files could be created based on this and selected from the we
 The skill will keep track of the last week #, day # that you completed and proceed through each day
 of the workout found in the json file.
 * The skill will loose this information if the mycroft is rebooted or the skill is updated.
-    * I will work to address this in future updates (20200202).
+    - Mycroft does not properly push websettings changes in skills to the web ui.
+    - I will work to address this in future updates (20200202).
 
 ## Examples
 * "Let's go for a run"
 * "Start my workout"
 * "Change my workout to week 3 day 4"
+    - [ ] WIP (20200202)
+    
 
 ## Credits
 pcwii
@@ -35,6 +38,7 @@ pcwii
 ## Installation Notes
 - msm install https://github.com/pcwii/c25k-skill.git
 - set websettings to your active week / day
+    - Mycroft does not properly push websettings changes in skills to the web ui.
     - this will not update upon completion although mycroft will remember last workout until a power loss or reboot
 
 ## Requirements
