@@ -1,5 +1,4 @@
-# <img src='https://raw.githack.com/FortAwesome/Font-Awesome/master/svgs/solid/couch.svg' card_color='#40DBB0' width='50' height='50' style='vertical-align:bottom'/> <img src='https://raw.githack.com/FortAwesome/Font-Awesome/master/svgs/solid/arrow-circle-right.svg' card_color='#40DBB0' width='50' height='50' style='vertical-align:bottom'/><img src='https://raw.githack.com/FortAwesome/Font-Awesome/master/svgs/solid/running.svg' card_color='#40DBB0' width='50' height='50' style='vertical-align:bottom'/> C25k
-# 
+# <img src='https://raw.githack.com/FortAwesome/Font-Awesome/master/svgs/solid/couch.svg' card_color='#40DBB0' width='50' height='50' style='vertical-align:bottom'/> <img src='https://raw.githack.com/FortAwesome/Font-Awesome/master/svgs/solid/arrow-circle-right.svg' card_color='#40DBB0' width='50' height='50' style='vertical-align:bottom'/><img src='https://raw.githack.com/FortAwesome/Font-Awesome/master/svgs/solid/running.svg' card_color='#40DBB0' width='50' height='50' style='vertical-align:bottom'/> C25k 
 Use mycroft.ai as a fitness coach and work your way through the 9 week 
 Couch to 5km running program.
 ## About
