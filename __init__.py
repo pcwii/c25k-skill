@@ -62,9 +62,6 @@ class C25kSkill(MycroftSkill):
         location = os.path.dirname(os.path.realpath(__file__))
         self.schedule_location = location + '/./schedules/'  # get the current skill parent directory path
         self.interval_position = 0
-        # self.progress_week = 9
-        # self.progress_day = 3
-        # self.workout_file = ""
         self.halt_all = False
 
     def on_websettings_changed(self):  # called when updating mycroft home page
@@ -104,7 +101,7 @@ class C25kSkill(MycroftSkill):
         except Exception as e:
             LOG.error(e)  # if there is an error attempting the workout then here....
 
-    def do_workout_thread(self, my_id, terminate):  # This is an independant thread handling the workout
+    def do_workout_thread(self, my_id, terminate):  # This is an independent thread handling the workout
         LOG.info("Starting Workout with ID: " + str(my_id))
         active_schedule = self.load_file(self.schedule_location + self.workout_file)  # "test_schedule.json")
         schedule_name = active_schedule["Name"]
@@ -258,9 +255,10 @@ class C25kSkill(MycroftSkill):
         LOG.info("Workout change requested")
         change_data = self.get_change(voice_payload)
         LOG.info("Change Request returned: " + str(change_data))
+        # todo add conversation if week / day is not included in the utterance
 #        if request_change:
 #            change_payload = self.get_response('request_change')
-        # todo add conversation if week / day is not included in the utterance
+
 
     def stop(self):
         pass

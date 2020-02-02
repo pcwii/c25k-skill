@@ -3,7 +3,7 @@ Use mycroft.ai as a fitness coach and work your way through the 9 week
 Couch to 5km running program.
 ## About
 Mycroft.ai becomes your motivational coach as you work your way through each of the intervals in the workout.
-* Depending on the length of the current interval motivations will be provided at the 1/4, 1/5, 3/4
+* Depending on the length of the current interval motivations will be provided at the 1/4, 1/2, 3/4
 points of the interval.
 This skill uses a schedule json (c25k.json) to track and support you as you work 
 through the couch to 5k running program.
@@ -48,6 +48,7 @@ pcwii
 - [ ] Provide ability to select/deselect motivations at different intervals in websettings
 - [ ] Ability to update websettings with current workout interval
 - [ ] Ability to store current workout interval for power loss or skill update
+- [ ] Ability to query Mycroft.ai for the next workout schedule
 
 ## Overview
 <img src='http://www.tombenninger.com/files/2011/09/VisualC25K.v1_0b.png'/>
