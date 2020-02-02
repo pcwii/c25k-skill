@@ -19,7 +19,7 @@ of the workout found in the json file.
 ## Examples
 * "Let's go for a run"
 * "Start my workout"
-* "Change my workout to week 3 day 4"
+* "Change my workout to week 3 day 4" (This can also be done in websettings)
     - [ ] WIP (20200202)
     
 
