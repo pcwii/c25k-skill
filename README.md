@@ -41,9 +41,9 @@ pcwii
 - none
 
 ## ToDo
-- [ ] provide ability to select/deselect motivations at different intervals in websettings
-- [ ] ability to update websettings with current workout interval
-- [ ] ability to store current workout interval for power loss or skill update
+- [ ] Provide ability to select/deselect motivations at different intervals in websettings
+- [ ] Ability to update websettings with current workout interval
+- [ ] Ability to store current workout interval for power loss or skill update
 
 ## Overview
 <img src='http://www.tombenninger.com/files/2011/09/VisualC25K.v1_0b.png'/>
