@@ -1,5 +1,3 @@
-# https://github.com/MycroftAI/skill-npr-news/blob/0d4134fd00d9bade433ad3e3cadf5ca1cd594f8c/settingsmeta.json
-
 from os.path import dirname, join
 
 from adapt.intent import IntentBuilder
@@ -13,13 +11,9 @@ from mycroft.audio import wait_while_speaking\
 
 import json
 import re
-# import random
-# import datetime
 import time
 import threading
-# import sys
 import os
-# from pathlib import Path
 from threading import Timer
 
 
@@ -79,8 +73,6 @@ class C25kSkill(MycroftSkill):
         self.progress_week = self.settings.get("progress_week", 1)
         self.progress_day = self.settings.get("progress_day", 1)
         self.workout_file = self.settings.get("workout_file", "c25k.json")
-        # self.settings["progress_week"] = 1
-        # self.settings["progress_day"] = 1
         self._is_setup = True
 
     def load_file(self, filename):  # loads the workout file json
@@ -88,19 +80,12 @@ class C25kSkill(MycroftSkill):
             data = json.load(json_file)
             return data
 
-    def extract_session(self, message_str):
-        regex_string = r"(?P<weeks>week \d+)?(?P<days>day \d+)?"
-        matches = re.search(regex_string, message_str)
-        utt_week = re.findall(r'\d+', matches.group('weeks'))
-        utt_day = re.findall(r'\d+', matches.group('days'))
-
     def end_of_interval(self):
         LOG.info('Interval Completed!')
         self.interval_position += 1
 
     def end_of_workout(self):
         LOG.info('Workout Ended!')
-        # Todo workout completed housekeeping
         self.halt_workout_thread()
 
     def init_workout_thread(self):  # creates the workout thread
@@ -121,7 +106,6 @@ class C25kSkill(MycroftSkill):
 
     def do_workout_thread(self, my_id, terminate):  # This is an independant thread handling the workout
         LOG.info("Starting Workout with ID: " + str(my_id))
-        # active_schedule = self.load_file(self.schedule_location + "c25k.json")
         active_schedule = self.load_file(self.schedule_location + self.workout_file)  # "test_schedule.json")
         schedule_name = active_schedule["Name"]
         this_week = active_schedule["weeks"][self.progress_week - 1]
@@ -199,7 +183,6 @@ class C25kSkill(MycroftSkill):
                             self.progress_day = 1
                             if self.progress_week == len(active_schedule["weeks"]):
                                 self.progress_week = 1
-
                             else:
                                 self.progress_week += 1
                                 self.settings["progress_week"] = self.progress_week
@@ -212,7 +195,6 @@ class C25kSkill(MycroftSkill):
             LOG.error(e)  # if there is an error attempting the workout then here....
             for each_thread in notification_threads:
                 each_thread.cancel()
-                each_thread.
 
     def speak_mid_point(self):
         self.speak_dialog('mid_point', expect_response=False)
@@ -236,22 +218,40 @@ class C25kSkill(MycroftSkill):
     def speak_workout_completed(self):
         self.speak_dialog('completed', expect_response=False)
 
+    def get_change(self, payload):
+        request_change = False
+        week_matches = re.search(r'(?P<weeks>week \d+)', payload)
+        if week_matches:
+            utt_week = re.findall("\d+", week_matches.group('weeks'))[0]
+            LOG.info("Caught week: " + str(utt_week))
+        else:
+            request_change = True
+        day_matches = re.search(r'(?P<days>day \d+)', payload)
+        if day_matches:
+            utt_day = re.findall("\d+", day_matches.group('days'))[0]
+            LOG.info("Caught day: " + str(utt_day))
+        else:
+            request_change = True
+        if request_change:
+            return "none"
+        else:
+            return utt_week, utt_day
+
     @intent_handler(IntentBuilder("BeginWorkoutIntent").require("RequestKeyword").require('WorkoutKeyword').build())
     def handle_begin_workout_intent(self, message):
         self.halt_all = False
         self.init_workout_thread()
         LOG.info("The workout has been Started")
 
-    @intent_handler(IntentBuilder('PauseWorkoutIntent').require('PauseKeyword').require('WorkoutKeyword').build())
-    def handle_pause_workout_intent(self, message):
-        LOG.info("The workout has been Paused")
-        self.speak_dialog('pause', expect_response=False)
+#    @intent_handler(IntentBuilder('PauseWorkoutIntent').require('PauseKeyword').require('WorkoutKeyword').build())
+#    def handle_pause_workout_intent(self, message):
+#        LOG.info("The workout has been Paused")
+#        self.speak_dialog('pause', expect_response=False)
 
-    @intent_handler(IntentBuilder('ResumeWorkoutIntent').require('ResumeKeyword').require('WorkoutKeyword').build())
-    def handle_resume_workout_intent(self, message):
-        LOG.info("The workout has been re-started")
-        self.speak_dialog('resume', expect_response=False)
-
+#    @intent_handler(IntentBuilder('ResumeWorkoutIntent').require('ResumeKeyword').require('WorkoutKeyword').build())
+#    def handle_resume_workout_intent(self, message):
+#        LOG.info("The workout has been re-started")
+#        self.speak_dialog('resume', expect_response=False)
 
     @intent_handler(IntentBuilder('StopWorkoutIntent').require('StopKeyword').require('WorkoutKeyword').build())
     def handle_stop_workout_intent(self, message):
@@ -266,14 +266,10 @@ class C25kSkill(MycroftSkill):
         self.halt_all = True
         self.halt_workout_thread()
         LOG.info("Workout change requested")
-        week_matches = re.search(r'(?P<weeks>week \d+)', voice_payload)
-        if week_matches:
-            utt_week = re.findall("\d+", week_matches.group('weeks'))[0]
-            LOG.info("Caught week: " + str(utt_week))
-        day_matches = re.search(r'(?P<days>day \d+)', voice_payload)
-        if day_matches:
-            utt_day = re.findall("\d+", day_matches.group('days'))[0]
-            LOG.info("Caught day: " + str(utt_day))
+        change_data = self.get_change(voice_payload)
+        LOG.info("Change Request returned: " + str(change_data))
+#        if request_change:
+#            change_payload = self.get_response('request_change')
         # todo add conversation if week / day is not included in the utterance
 
     def stop(self):
