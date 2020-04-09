@@ -56,7 +56,8 @@ class C25kSkill(MycroftSkill):
         self.load_data_files(dirname(__file__))
         #  Check and then monitor for credential changes
         self.audio_service = AudioService(self.bus)
-        self.settings.set_changed_callback(self.on_websettings_changed)
+        #self.settings.set_changed_callback(self.on_websettings_changed)
+        self.settings_change_callback = self.on_websettings_changed
         self.on_websettings_changed()
         # Todo Add / update the following to the websettings for tracking
         location = os.path.dirname(os.path.realpath(__file__))
