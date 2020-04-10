@@ -1,0 +1,3 @@
+The Workout Duration is, {{duration_hr}}, Minutes, and {{duration_sec}}, Seconds
+This workout is, {{duration_hr}}, Minutes, and {{duration_sec}}, Seconds long
+only, {{duration_hr}}, Minutes, and {{duration_sec}}, Seconds and you are done

@@ -78,6 +78,15 @@ class C25kSkill(MycroftSkill):
             data = json.load(json_file)
             return data
 
+    def convertTime(intSeconds):
+        newTime = {"hours": 0, "minutes": 0, "seconds": 0}
+        min, sec = divmod(intSeconds, 60)
+        hour, min = divmod(min, 60)
+        newTime["hours"] = hour
+        newTime["minutes"] = min
+        newTime["seconds"] = sec
+        return newTime
+
     def end_of_interval(self):
         LOG.info('Interval Completed!')
         self.interval_position += 1
@@ -123,8 +132,19 @@ class C25kSkill(MycroftSkill):
         self.speak_dialog('details_001', data={"week": this_week["Name"], "day": this_day["Name"]},
                           expect_response=False)
         wait_while_speaking()
-        self.speak_dialog('details_002', data={"duration": str(workout_duration)},
-                          expect_response=False)
+        duration_details = self.convertTime(workout_duration)
+        if duration_details["hours"] != 0:
+            self.speak_dialog('details_002_hr', data={"duration_hr": str(duration_details["hours"]),
+                                                      "duration_min": str(duration_details["minutes"]),
+                                                      "duration_sec": str(duration_details["seconds"])},
+                              expect_response=False)
+        elif duration_details["minutes"] != 0:
+            self.speak_dialog('details_002_min', data={"duration_min": str(duration_details["minutes"]),
+                                                       "duration_sec": str(duration_details["seconds"])},
+                              expect_response=False)
+        else:
+            self.speak_dialog('details_002_sec', data={"duration_sec": str(duration_details["seconds"])},
+                              expect_response=False)
         wait_while_speaking()
         self.speak_dialog('details_003', data={"intervals": str(last_interval)},
                           expect_response=False)
@@ -136,7 +156,7 @@ class C25kSkill(MycroftSkill):
                     this_duration = all_intervals[index][key]
                     LOG.info("Workout Type: " + key)
                     workout_type = key
-                LOG.info("Workout Interval Length: " + str(this_duration) + " seconds")
+                LOG.info("Workout Interval Length: " + str(duration_details))
                 LOG.info("Workout underway at step: " + str(index + 1) + "/" + str(last_interval) +
                          ", " + str(this_interval))
                 notification_threads = []  # reset notification threads
