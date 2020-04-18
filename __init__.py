@@ -79,14 +79,14 @@ class C25kSkill(MycroftSkill):
             data = json.load(json_file)
             return data
 
-    def convertTime(intSeconds):
+    def convert_time(self, int_seconds):
         newTime = {"hours": 0, "minutes": 0, "seconds": 0}
-        min, sec = divmod(intSeconds, 60)
+        min, sec = divmod(int_seconds, 60)
         hour, min = divmod(min, 60)
-        newTime["hours"] = hour
-        newTime["minutes"] = min
-        newTime["seconds"] = sec
-        return newTime
+        new_time["hours"] = hour
+        new_time["minutes"] = min
+        new_time["seconds"] = sec
+        return new_time
 
     def end_of_interval(self):
         LOG.info('Interval Completed!')
@@ -134,7 +134,7 @@ class C25kSkill(MycroftSkill):
         self.speak_dialog('details_001', data={"week": this_week["Name"], "day": this_day["Name"]},
                           expect_response=False)
         wait_while_speaking()
-        duration_details = self.convertTime(workout_duration_sec)
+        duration_details = self.convert_time(workout_duration_sec)
         LOG.info('Workout Time: ' + str(duration_details))
         if duration_details["hours"] != 0:
             self.speak_dialog('details_002_hr', data={"duration_hr": str(duration_details["hours"]),
