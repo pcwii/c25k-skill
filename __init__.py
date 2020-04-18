@@ -7,8 +7,9 @@ from mycroft.util.log import LOG
 from mycroft.skills.context import adds_context, removes_context
 from mycroft.api import DeviceApi
 from mycroft.skills.audioservice import AudioService
-#from mycroft.audio import wait_while_speaking
-from mycroft.util import wait_while_speaking
+from mycroft.audio import wait_while_speaking
+# from mycroft.util import wait_while_speaking
+
 
 import json
 import re
