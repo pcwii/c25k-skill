@@ -121,12 +121,12 @@ class C25kSkill(MycroftSkill):
         all_intervals = this_day["intervals"]
         last_interval = len(all_intervals)
         LOG.info('Last Interval = ' + str(last_interval))
-        workout_duration = 0
+        workout_duration_sec = 0
         for each_interval in this_day["intervals"]:
             for interval_type in each_interval:
-                workout_duration = workout_duration + each_interval[interval_type]
-        workout_duration = int(workout_duration / 60)  # minutes
-        LOG.info('Workout Duration: ' + str(workout_duration))
+                workout_duration_sec = workout_duration_sec + each_interval[interval_type]
+        workout_duration_min = int(workout_duration_sec / 60)  # minutes
+        LOG.info('Workout Duration: ' + str(workout_duration_sec))
         # wait_while_speaking()
         self.speak_dialog('details_000', data={"name": schedule_name},
                           expect_response=False)
@@ -134,7 +134,8 @@ class C25kSkill(MycroftSkill):
         self.speak_dialog('details_001', data={"week": this_week["Name"], "day": this_day["Name"]},
                           expect_response=False)
         wait_while_speaking()
-        duration_details = self.convertTime(workout_duration)
+        duration_details = self.convertTime(workout_duration_sec)
+        LOG.info('Workout Time: ' + str(duration_details))
         if duration_details["hours"] != 0:
             self.speak_dialog('details_002_hr', data={"duration_hr": str(duration_details["hours"]),
                                                       "duration_min": str(duration_details["minutes"]),
