@@ -67,7 +67,7 @@ class C25kSkill(MycroftSkill):
 
     def on_websettings_changed(self):  # called when updating mycroft home page
         self._is_setup = False
-        LOG.info("Websettings Changed!")
+        LOG.info("Websettings Changed!, Getting latest settings!")
         self.progress_week = self.settings.get("progress_week", 1)
         self.progress_day = self.settings.get("progress_day", 1)
         self.workout_file = self.settings.get("workout_file", "c25k.json")
