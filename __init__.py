@@ -7,7 +7,8 @@ from mycroft.util.log import LOG
 from mycroft.skills.context import adds_context, removes_context
 from mycroft.api import DeviceApi
 from mycroft.skills.audioservice import AudioService
-from mycroft.audio import wait_while_speaking\
+#from mycroft.audio import wait_while_speaking
+from mycroft.util import wait_while_speaking
 
 import json
 import re
@@ -125,7 +126,8 @@ class C25kSkill(MycroftSkill):
             for interval_type in each_interval:
                 workout_duration = workout_duration + each_interval[interval_type]
         workout_duration = int(workout_duration / 60)  # minutes
-        wait_while_speaking()
+        LOG.info('Workout Duration: ' + str(workout_duration))
+        # wait_while_speaking()
         self.speak_dialog('details_000', data={"name": schedule_name},
                           expect_response=False)
         wait_while_speaking()
