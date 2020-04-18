@@ -86,7 +86,7 @@ class C25kSkill(MycroftSkill):
         new_time["hours"] = hour
         new_time["minutes"] = min
         new_time["seconds"] = sec
-        LOG.info("Convert Time Returns: " + str(new_time))
+        # LOG.info("Convert Time Returns: " + str(new_time))
         return new_time
 
     def end_of_interval(self):
@@ -137,16 +137,19 @@ class C25kSkill(MycroftSkill):
         wait_while_speaking()
         duration_details = self.convert_time(workout_duration_sec)
         LOG.info('Workout Time: ' + str(duration_details))
-        if duration_details["hours"] != 0:
+        if duration_details['hours'] != 0:
+            LOG.info('Processing hours: ' + str(duration_details['hours']))
             self.speak_dialog('details_002_hr', data={"duration_hr": str(duration_details["hours"]),
                                                       "duration_min": str(duration_details["minutes"]),
                                                       "duration_sec": str(duration_details["seconds"])},
                               expect_response=False)
         elif duration_details["minutes"] != 0:
+            LOG.info('Processing minutes: ' + str(duration_details['minutes']))
             self.speak_dialog('details_002_min', data={"duration_min": str(duration_details["minutes"]),
                                                        "duration_sec": str(duration_details["seconds"])},
                               expect_response=False)
         else:
+            LOG.info('Processing seconds: ' + str(duration_details['seconds']))
             self.speak_dialog('details_002_sec', data={"duration_sec": str(duration_details["seconds"])},
                               expect_response=False)
         wait_while_speaking()
