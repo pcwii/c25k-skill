@@ -80,12 +80,13 @@ class C25kSkill(MycroftSkill):
             return data
 
     def convert_time(self, int_seconds):
-        newTime = {"hours": 0, "minutes": 0, "seconds": 0}
+        new_time = {"hours": 0, "minutes": 0, "seconds": 0}
         min, sec = divmod(int_seconds, 60)
         hour, min = divmod(min, 60)
         new_time["hours"] = hour
         new_time["minutes"] = min
         new_time["seconds"] = sec
+        LOG.info("Convert Time Returns: " + str(new_time))
         return new_time
 
     def end_of_interval(self):
