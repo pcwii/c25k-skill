@@ -1,4 +1,5 @@
 from os.path import dirname, join
+import datetime
 
 from adapt.intent import IntentBuilder
 from mycroft.skills.core import MycroftSkill, intent_handler, intent_file_handler
@@ -168,9 +169,13 @@ class C25kSkill(MycroftSkill):
                     LOG.info("Workout Type: " + key)
                     workout_type = key
                 interval_details = self.convert_time(this_duration)
+                now = datetime.datetime.now()
+                now.year, now.month, now.day, now.hour, now.minute, now.second
+
                 LOG.info("Workout Interval Length: " + str(interval_details))
-                LOG.info("Workout underway at step: " + str(index + 1) + "/" + str(last_interval) +
+                LOG.info("Workout underway at interval: " + str(index + 1) + "/" + str(last_interval) +
                          ", " + str(this_interval))
+                LOG.info("Interval Time: " + str(now.hour) + ":" + str(now.minute) + ":" + str(now.second))
                 notification_threads = []  # reset notification threads
                 # Insert general workout prompts here
                 # Each workout prompt below is a separate thread timer
