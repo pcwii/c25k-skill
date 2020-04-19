@@ -167,8 +167,8 @@ class C25kSkill(MycroftSkill):
                     this_duration = all_intervals[index][key]
                     LOG.info("Workout Type: " + key)
                     workout_type = key
-                LOG.info("Workout Interval Length: " + str(duration_details))
                 duration_details = self.convert_time(workout_duration_sec)
+                LOG.info("Workout Interval Length: " + str(duration_details))
                 LOG.info("Workout underway at step: " + str(index + 1) + "/" + str(last_interval) +
                          ", " + str(this_interval))
                 notification_threads = []  # reset notification threads
