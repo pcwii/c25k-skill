@@ -140,17 +140,20 @@ class C25kSkill(MycroftSkill):
         LOG.info('Workout Time: ' + str(duration_details))
         if duration_details['hours'] != 0:
             LOG.info('Processing hours: ' + str(duration_details['hours']))
+            wait_while_speaking()
             self.speak_dialog('details_002_hr', data={"duration_hr": str(duration_details["hours"]),
                                                       "duration_min": str(duration_details["minutes"]),
                                                       "duration_sec": str(duration_details["seconds"])},
                               expect_response=False)
         elif duration_details["minutes"] != 0:
             LOG.info('Processing minutes: ' + str(duration_details['minutes']))
+            wait_while_speaking()
             self.speak_dialog('details_002_min', data={"duration_min": str(duration_details["minutes"]),
                                                        "duration_sec": str(duration_details["seconds"])},
                               expect_response=False)
         else:
             LOG.info('Processing seconds: ' + str(duration_details['seconds']))
+            wait_while_speaking()
             self.speak_dialog('details_002_sec', data={"duration_sec": str(duration_details["seconds"])},
                               expect_response=False)
         wait_while_speaking()
@@ -165,6 +168,7 @@ class C25kSkill(MycroftSkill):
                     LOG.info("Workout Type: " + key)
                     workout_type = key
                 LOG.info("Workout Interval Length: " + str(duration_details))
+                duration_details = self.convert_time(workout_duration_sec)
                 LOG.info("Workout underway at step: " + str(index + 1) + "/" + str(last_interval) +
                          ", " + str(this_interval))
                 notification_threads = []  # reset notification threads
@@ -187,10 +191,27 @@ class C25kSkill(MycroftSkill):
                     notification_threads.append(Timer(this_duration, self.end_of_interval))
                 for each_thread in notification_threads:
                     each_thread.start()
-                wait_while_speaking()
-                self.speak_dialog('details_004', data={"interval_length": str(this_duration),
-                                                       "interval_type": workout_type},
-                                  expect_response=False)
+                if duration_details['hours'] != 0:
+                    LOG.info('Processing hours: ' + str(duration_details['hours']))
+                    wait_while_speaking()
+                    self.speak_dialog('details_004_hr', data={"interval_type": workout_type,
+                                                              "duration_hr": str(duration_details["hours"]),
+                                                              "duration_min": str(duration_details["minutes"]),
+                                                              "duration_sec": str(duration_details["seconds"])},
+                                      expect_response=False)
+                elif duration_details["minutes"] != 0:
+                    LOG.info('Processing minutes: ' + str(duration_details['minutes']))
+                    wait_while_speaking()
+                    self.speak_dialog('details_004_min', data={"interval_type": workout_type,
+                                                               "duration_min": str(duration_details["minutes"]),
+                                                               "duration_sec": str(duration_details["seconds"])},
+                                      expect_response=False)
+                else:
+                    LOG.info('Processing seconds: ' + str(duration_details['seconds']))
+                    wait_while_speaking()
+                    self.speak_dialog('details_004_sec', data={"interval_type": workout_type,
+                                                               "duration_sec": str(duration_details["seconds"])},
+                                      expect_response=False)
                 interval_start_mp3 = "ding_001.mp3"
                 self.audio_service.play(join(dirname(__file__), "soundclips", interval_start_mp3))
                 while (index == self.interval_position) and not terminate():  # wait while this interval completes

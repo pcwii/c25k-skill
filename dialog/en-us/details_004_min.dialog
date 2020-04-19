@@ -1,0 +1,2 @@
+This is a, {{duration_min}}, Minute, and {{duration_sec}}, Second {{interval_type}} interval
+This, {{interval_type}}, interval is, {{duration_min}}, Minutes and {{duration_sec}}, seconds long
