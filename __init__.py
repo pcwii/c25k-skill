@@ -175,7 +175,7 @@ class C25kSkill(MycroftSkill):
                 LOG.info("Workout Interval Length: " + str(interval_details))
                 LOG.info("Workout underway at interval: " + str(index + 1) + "/" + str(last_interval) +
                          ", " + str(this_interval))
-                LOG.info("Interval Time: " + str(now.hour) + ":" + str(now.minute) + ":" + str(now.second))
+                LOG.info("Interval Start Time: " + str(now.hour) + ":" + str(now.minute) + ":" + str(now.second))
                 notification_threads = []  # reset notification threads
                 # Insert general workout prompts here
                 # Each workout prompt below is a separate thread timer
