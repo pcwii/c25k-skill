@@ -167,8 +167,8 @@ class C25kSkill(MycroftSkill):
                     this_duration = all_intervals[index][key]
                     LOG.info("Workout Type: " + key)
                     workout_type = key
-                duration_details = self.convert_time(workout_duration_sec)
-                LOG.info("Workout Interval Length: " + str(duration_details))
+                interval_details = self.convert_time(this_duration)
+                LOG.info("Workout Interval Length: " + str(interval_details))
                 LOG.info("Workout underway at step: " + str(index + 1) + "/" + str(last_interval) +
                          ", " + str(this_interval))
                 notification_threads = []  # reset notification threads
@@ -191,26 +191,26 @@ class C25kSkill(MycroftSkill):
                     notification_threads.append(Timer(this_duration, self.end_of_interval))
                 for each_thread in notification_threads:
                     each_thread.start()
-                if duration_details['hours'] != 0:
-                    LOG.info('Processing hours: ' + str(duration_details['hours']))
+                if interval_details['hours'] != 0:
+                    LOG.info('Processing hours: ' + str(interval_details['hours']))
                     wait_while_speaking()
                     self.speak_dialog('details_004_hr', data={"interval_type": workout_type,
-                                                              "duration_hr": str(duration_details["hours"]),
-                                                              "duration_min": str(duration_details["minutes"]),
-                                                              "duration_sec": str(duration_details["seconds"])},
+                                                              "duration_hr": str(interval_details["hours"]),
+                                                              "duration_min": str(interval_details["minutes"]),
+                                                              "duration_sec": str(interval_details["seconds"])},
                                       expect_response=False)
-                elif duration_details["minutes"] != 0:
-                    LOG.info('Processing minutes: ' + str(duration_details['minutes']))
+                elif interval_details["minutes"] != 0:
+                    LOG.info('Processing minutes: ' + str(interval_details['minutes']))
                     wait_while_speaking()
                     self.speak_dialog('details_004_min', data={"interval_type": workout_type,
-                                                               "duration_min": str(duration_details["minutes"]),
-                                                               "duration_sec": str(duration_details["seconds"])},
+                                                               "duration_min": str(interval_details["minutes"]),
+                                                               "duration_sec": str(interval_details["seconds"])},
                                       expect_response=False)
                 else:
-                    LOG.info('Processing seconds: ' + str(duration_details['seconds']))
+                    LOG.info('Processing seconds: ' + str(interval_details['seconds']))
                     wait_while_speaking()
                     self.speak_dialog('details_004_sec', data={"interval_type": workout_type,
-                                                               "duration_sec": str(duration_details["seconds"])},
+                                                               "duration_sec": str(interval_details["seconds"])},
                                       expect_response=False)
                 interval_start_mp3 = "ding_001.mp3"
                 self.audio_service.play(join(dirname(__file__), "soundclips", interval_start_mp3))
