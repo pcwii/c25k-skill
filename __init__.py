@@ -171,10 +171,12 @@ class C25kSkill(MycroftSkill):
                 interval_details = self.convert_time(this_duration)
                 now = datetime.datetime.now()
                 now.year, now.month, now.day, now.hour, now.minute, now.second
-
                 LOG.info("Workout Interval Length: " + str(interval_details))
                 LOG.info("Workout underway at interval: " + str(index + 1) + "/" + str(last_interval) +
                          ", " + str(this_interval))
+                self.speak_dialog('interval_notice', data={"intervals": str(last_interval),
+                                                           "interval": str(index + 1)},
+                                  expect_response=False)
                 LOG.info("Interval Start Time: " + str(now.hour) + ":" + str(now.minute) + ":" + str(now.second))
                 notification_threads = []  # reset notification threads
                 # Insert general workout prompts here
