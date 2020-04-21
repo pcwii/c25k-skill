@@ -319,7 +319,7 @@ class C25kSkill(MycroftSkill):
         # todo add conversation if week / day is not included in the utterance
         LOG.info("Updating workout week to: " + str(change_data[0]))
         self.settings["progress_week"] = self.progress_week
-        LOG.info("Updating workout day to: " + + str(change_data[1]))
+        LOG.info("Updating workout day to: " + str(change_data[1]))
         self.settings["progress_day"] = change_data[1]
     #        if request_change:
 #            change_payload = self.get_response('request_change')
