@@ -289,7 +289,7 @@ class C25kSkill(MycroftSkill):
         if request_change:
             return "none"
         else:
-            return str(utt_week, utt_day)
+            return str(utt_week), str(utt_day)
 
     @intent_handler(IntentBuilder("BeginWorkoutIntent").require("RequestKeyword").require('WorkoutKeyword').build())
     def handle_begin_workout_intent(self, message):
