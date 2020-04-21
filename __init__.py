@@ -239,9 +239,11 @@ class C25kSkill(MycroftSkill):
                                 self.progress_week = 1
                             else:
                                 self.progress_week += 1
+                                LOG.info("Updating workout week to: " + str(self.progress_week))
                                 self.settings["progress_week"] = self.progress_week
                         else:
                             self.progress_day += 1
+                            LOG.info("Updating workout day to: " + str(self.progress_day))
                             self.settings["progress_day"] = self.progress_day
                         self.speak_workout_completed()
                     break
@@ -270,6 +272,8 @@ class C25kSkill(MycroftSkill):
             time.sleep(1)
 
     def speak_workout_completed(self):
+        interval_start_mp3 = "ding_001.mp3"
+        self.audio_service.play(join(dirname(__file__), "soundclips", interval_start_mp3))
         self.speak_dialog('completed', expect_response=False)
 
     def get_change(self, payload):
@@ -313,7 +317,11 @@ class C25kSkill(MycroftSkill):
         change_data = self.get_change(voice_payload)
         LOG.info("Change Request returned: " + str(change_data))
         # todo add conversation if week / day is not included in the utterance
-#        if request_change:
+        LOG.info("Updating workout week to: " + str(change_data[0]))
+        self.settings["progress_week"] = self.progress_week
+        LOG.info("Updating workout day to: " + + str(change_data[1]))
+        self.settings["progress_day"] = change_data[1]
+    #        if request_change:
 #            change_payload = self.get_response('request_change')
 
 
