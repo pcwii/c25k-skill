@@ -52,6 +52,8 @@ class C25kSkill(MycroftSkill):
         self.halt_all = False
         self.workout_file = ""
         self.audio_service = ""
+        self.start_time = 0
+        self.end_time = 0
 
     # This method loads the files needed for the skill's functioning, and
     # creates and registers each intent that the skill uses
@@ -161,8 +163,9 @@ class C25kSkill(MycroftSkill):
         self.speak_dialog('details_003', data={"intervals": str(last_interval)},
                           expect_response=False)
         interval_list = enumerate(all_intervals)
+        self.start_time = datetime.datetime.now()
         try:
-            for index, value in interval_list:
+            for index, value in interval_list: # loop through every interval
                 this_interval = json.dumps(all_intervals[index])
                 for key in all_intervals[index]:
                     this_duration = all_intervals[index][key]
@@ -181,11 +184,11 @@ class C25kSkill(MycroftSkill):
                 notification_threads = []  # reset notification threads
                 # Insert general workout prompts here
                 # Each workout prompt below is a separate thread timer
-                if this_duration >= 10:  # Motivators only added if interval length is greater than 10 seconds
-                    notification_threads.append(Timer(int(this_duration - 6), self.speak_countdown))
+                # if this_duration >= 10:  # Motivators only added if interval length is greater than 10 seconds
+                    # notification_threads.append(Timer(int(this_duration - 6), self.speak_countdown))
                 if this_duration >= 30:  # Motivators only added if interval length is greater than 30 seconds
                     notification_threads.append(Timer(int(this_duration / 2), self.speak_mid_point))
-                    notification_threads.append(Timer(int(this_duration - 10), self.speak_transition))
+                    notification_threads.append(Timer(int(this_duration - 12), self.speak_transition))
                 if this_duration >= 120:  # Motivators only added if interval length is greater than 2 minutes seconds
                     first_quarter = int(this_duration / 4)
                     last_quarter = first_quarter * 3
@@ -197,7 +200,11 @@ class C25kSkill(MycroftSkill):
                 else:
                     notification_threads.append(Timer(this_duration, self.end_of_interval))
                 for each_thread in notification_threads:
+                    # Start all the preset threads then notify the participant with a Sound!
                     each_thread.start()
+                interval_start_mp3 = "ding_001.mp3"
+                self.audio_service.play(join(dirname(__file__), "soundclips", interval_start_mp3))
+                # Describe the current interval now that it has started
                 if interval_details['hours'] != 0:
                     LOG.info('Processing hours: ' + str(interval_details['hours']))
                     wait_while_speaking()
@@ -219,13 +226,12 @@ class C25kSkill(MycroftSkill):
                     self.speak_dialog('details_004_sec', data={"interval_type": workout_type,
                                                                "duration_sec": str(interval_details["seconds"])},
                                       expect_response=False)
-                interval_start_mp3 = "ding_001.mp3"
-                self.audio_service.play(join(dirname(__file__), "soundclips", interval_start_mp3))
                 while (index == self.interval_position) and not terminate():  # wait while this interval completes
                     time.sleep(1)
                     # This is a do nothing loop while the workout proceeds
                 if terminate():
                     for each_thread in notification_threads:
+                        # Stop all the threads that were configured for this interval
                         each_thread.cancel()
                         self.interval_position = 0
                     if index != (last_interval - 1):
@@ -272,9 +278,28 @@ class C25kSkill(MycroftSkill):
             time.sleep(1)
 
     def speak_workout_completed(self):
+        self.end_time = datetime.datetime.now()
         interval_start_mp3 = "ding_001.mp3"
         self.audio_service.play(join(dirname(__file__), "soundclips", interval_start_mp3))
+        wait_while_speaking()
         self.speak_dialog('completed', expect_response=False)
+        delta_time_s = self.end_time - self.start_time
+        delta_time = self.convert_time(delta_time_s.seconds)
+        if delta_time['hours'] != 0:
+            wait_while_speaking()
+            self.speak_dialog('report_hr', data={"duration_hr": str(delta_time["hours"]),
+                                                 "duration_min": str(delta_time["minutes"]),
+                                                 "duration_sec": str(delta_time["seconds"])},
+                              expect_response=False)
+        elif delta_time["minutes"] != 0:
+            wait_while_speaking()
+            self.speak_dialog('report_min', data={"duration_min": str(delta_time["minutes"]),
+                                                  "duration_sec": str(delta_time["seconds"])},
+                              expect_response=False)
+        else:
+            wait_while_speaking()
+            self.speak_dialog('report_sec', data={"duration_sec": str(delta_time["seconds"])},
+                              expect_response=False)
 
     def get_change(self, payload):
         request_change = False
@@ -325,7 +350,6 @@ class C25kSkill(MycroftSkill):
         self.settings["progress_day"] = self.progress_day
     #        if request_change:
 #            change_payload = self.get_response('request_change')
-
 
     def stop(self):
         pass

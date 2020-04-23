@@ -1,0 +1,4 @@
+Good Job, you have now completed your workout, it took you, {{duration_hr}}, Hours, {{duration_min}}, Minutes, and {{duration_sec}}, Seconds
+Your Workout was, {{duration_hr}}, Hours, {{duration_min}}, Minutes, and {{duration_sec}}, Seconds
+You finished in, {{duration_hr}}, Hours, {{duration_min}}, Minutes, and {{duration_sec}}, Seconds
+You completed that workout in, {{duration_hr}}, Hours, {{duration_min}}, Minutes, and {{duration_sec}}, Seconds
