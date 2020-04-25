@@ -123,7 +123,9 @@ class C25kSkill(MycroftSkill):
         schedule_name = active_schedule["Name"]
         LOG.info("Active Schedule Name: " + schedule_name)
         this_week = active_schedule["weeks"][self.progress_week - 1]
+        LOG.info("Active Week: " + str(this_week))
         this_day = this_week["day"][self.progress_day - 1]
+        LOG.info("Active Day: " + str(this_day))
         all_intervals = this_day["intervals"]
         last_interval = len(all_intervals)
         LOG.info('Last Interval = ' + str(last_interval))
