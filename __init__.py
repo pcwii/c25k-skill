@@ -125,10 +125,11 @@ class C25kSkill(MycroftSkill):
         LOG.info("Current Week: " + str(self.progress_week))
         LOG.info("Current Day: " + str(self.progress_day))
         this_week_int = (int(self.progress_week) - 1)
-        #LOG.info("Active Week: " + str(this_week_int))
+        # LOG.info("Active Week: " + str(this_week_int))
         this_week = active_schedule["weeks"][this_week_int]
         LOG.info("Active Week: " + str(this_week))
-        this_day = this_week["day"][self.progress_day - 1]
+        this_day_int = (int(self.progress_day) - 1)
+        this_day = this_week["day"][this_day_int]
         LOG.info("Active Day: " + str(this_day))
         all_intervals = this_day["intervals"]
         last_interval = len(all_intervals)
