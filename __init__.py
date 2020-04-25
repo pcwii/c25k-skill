@@ -122,6 +122,8 @@ class C25kSkill(MycroftSkill):
         active_schedule = self.load_file(self.schedule_location + self.workout_file)  # "test_schedule.json")
         schedule_name = active_schedule["Name"]
         LOG.info("Active Schedule Name: " + schedule_name)
+        LOG.info("Current Week: " + str(self.progress_week))
+        LOG.info("Current Day: " + str(self.progress_day))
         this_week = active_schedule["weeks"][self.progress_week - 1]
         LOG.info("Active Week: " + str(this_week))
         this_day = this_week["day"][self.progress_day - 1]
