@@ -343,12 +343,12 @@ class C25kSkill(MycroftSkill):
         change_data = self.get_change(voice_payload)
         LOG.info("Change Request returned: " + str(change_data))
         # todo add conversation if week / day is not included in the utterance
-        LOG.info("Updating workout week to: " + str(change_data[0]))
-        self.progress_week = change_data[0]
-        self.settings["progress_week"] = self.progress_week
-        LOG.info("Updating workout day to: " + str(change_data[1]))
-        self.progress_day = change_data[1]
-        self.settings["progress_day"] = self.progress_day
+#        LOG.info("Updating workout week to: " + str(change_data[0]))
+#        self.progress_week = change_data[0]
+#        self.settings["progress_week"] = self.progress_week
+#        LOG.info("Updating workout day to: " + str(change_data[1]))
+#        self.progress_day = change_data[1]
+#        self.settings["progress_day"] = self.progress_day
     #        if request_change:
 #            change_payload = self.get_response('request_change')
 
