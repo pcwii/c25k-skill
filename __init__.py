@@ -126,10 +126,10 @@ class C25kSkill(MycroftSkill):
         LOG.info("Current Day: " + str(self.progress_day))
         this_week_int = int(self.progress_week) - 1
         this_week = active_schedule["weeks"][this_week_int]
-        LOG.info("Active Week: " + str(this_week))
+        #LOG.info("Active Week: " + str(this_week))
         this_day_int = int(self.progress_day) - 1
         this_day = this_week["day"][this_day_int]
-        LOG.info("Active Day: " + str(this_day))
+        #LOG.info("Active Day: " + str(this_day))
         all_intervals = this_day["intervals"]
         last_interval = len(all_intervals)
         LOG.info('Last Interval = ' + str(last_interval))
@@ -234,6 +234,7 @@ class C25kSkill(MycroftSkill):
                     each_thread.start()
                 interval_start_mp3 = "ding_001.mp3"
                 self.audio_service.play(join(dirname(__file__), "soundclips", interval_start_mp3))
+                LOG.info('Workout Notification Sound Provided')
                 while (index == self.interval_position) and not terminate():  # wait while this interval completes
                     time.sleep(1)
                     # This is a do nothing loop while the workout proceeds
