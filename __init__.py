@@ -124,11 +124,10 @@ class C25kSkill(MycroftSkill):
         LOG.info("Active Schedule Name: " + schedule_name)
         LOG.info("Current Week: " + str(self.progress_week))
         LOG.info("Current Day: " + str(self.progress_day))
-        this_week_int = (int(self.progress_week) - 1)
-        # LOG.info("Active Week: " + str(this_week_int))
+        this_week_int = int(self.progress_week) - 1
         this_week = active_schedule["weeks"][this_week_int]
         LOG.info("Active Week: " + str(this_week))
-        this_day_int = (int(self.progress_day) - 1)
+        this_day_int = int(self.progress_day) - 1
         this_day = this_week["day"][this_day_int]
         LOG.info("Active Day: " + str(this_day))
         all_intervals = this_day["intervals"]
@@ -140,7 +139,7 @@ class C25kSkill(MycroftSkill):
                 workout_duration_sec = workout_duration_sec + each_interval[interval_type]
         workout_duration_min = int(workout_duration_sec / 60)  # minutes
         LOG.info('Workout Duration: ' + str(workout_duration_sec))
-        # wait_while_speaking()
+        wait_while_speaking()
         self.speak_dialog('details_000', data={"name": schedule_name},
                           expect_response=False)
         wait_while_speaking()
@@ -185,6 +184,7 @@ class C25kSkill(MycroftSkill):
                 LOG.info("Workout Interval Length: " + str(interval_details))
                 LOG.info("Workout underway at interval: " + str(index + 1) + "/" + str(last_interval) +
                          ", " + str(this_interval))
+                wait_while_speaking()
                 self.speak_dialog('interval_notice', data={"intervals": str(last_interval),
                                                            "interval": str(index + 1)},
                                   expect_response=False)
@@ -196,7 +196,7 @@ class C25kSkill(MycroftSkill):
                     # notification_threads.append(Timer(int(this_duration - 6), self.speak_countdown))
                 if this_duration >= 30:  # Motivators only added if interval length is greater than 30 seconds
                     notification_threads.append(Timer(int(this_duration / 2), self.speak_mid_point))
-                    notification_threads.append(Timer(int(this_duration - 12), self.speak_transition))
+                    notification_threads.append(Timer(int(this_duration - 15), self.speak_transition))
                 if this_duration >= 120:  # Motivators only added if interval length is greater than 2 minutes seconds
                     first_quarter = int(this_duration / 4)
                     last_quarter = first_quarter * 3
@@ -207,11 +207,6 @@ class C25kSkill(MycroftSkill):
                     LOG.info('Last Interval workout almost completed!')
                 else:
                     notification_threads.append(Timer(this_duration, self.end_of_interval))
-                for each_thread in notification_threads:
-                    # Start all the preset threads then notify the participant with a Sound!
-                    each_thread.start()
-                interval_start_mp3 = "ding_001.mp3"
-                self.audio_service.play(join(dirname(__file__), "soundclips", interval_start_mp3))
                 # Describe the current interval now that it has started
                 if interval_details['hours'] != 0:
                     LOG.info('Processing hours: ' + str(interval_details['hours']))
@@ -234,6 +229,11 @@ class C25kSkill(MycroftSkill):
                     self.speak_dialog('details_004_sec', data={"interval_type": workout_type,
                                                                "duration_sec": str(interval_details["seconds"])},
                                       expect_response=False)
+                for each_thread in notification_threads:
+                    # Start all the preset threads then notify the participant with a Sound!
+                    each_thread.start()
+                interval_start_mp3 = "ding_001.mp3"
+                self.audio_service.play(join(dirname(__file__), "soundclips", interval_start_mp3))
                 while (index == self.interval_position) and not terminate():  # wait while this interval completes
                     time.sleep(1)
                     # This is a do nothing loop while the workout proceeds
