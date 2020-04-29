@@ -1,4 +1,4 @@
-we are nearing the end of this interval
-this interval is nearing the end
-prepare to change intervals
-you will be changing intervals shortly
+we are nearing the end of this interval, prepare to {{interval_type}}
+this interval is nearing the end, get ready to {{interval_type}}
+you will need to, {{interval_type}}, next, prepare to change intervals
+you will be changing to a, {{interval_type}}, interval shortly
