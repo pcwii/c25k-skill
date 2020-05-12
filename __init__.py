@@ -178,12 +178,13 @@ class C25kSkill(MycroftSkill):
                     this_duration = all_intervals[index][key]
                     LOG.info("Workout Type: " + key)
                     workout_type = key
-                    if index < last_interval:
-                        next_index = index + 1
-                        for next_key in all_intervals[next_index]:
-                            next_workout_type = next_key
-                    else:
-                        next_workout_type = "recovery"
+#                    if index < last_interval:
+#                        next_index = index + 1
+#                        for next_key in all_intervals[next_index]:
+#                            next_workout_type = next_key
+#                    else:
+#                        next_workout_type = "recovery"
+#                LOG.info("Next Workout Type: " + next_workout_type)
                 interval_details = self.convert_time(this_duration)
                 now = datetime.datetime.now()
                 now.year, now.month, now.day, now.hour, now.minute, now.second
@@ -202,7 +203,9 @@ class C25kSkill(MycroftSkill):
                     # notification_threads.append(Timer(int(this_duration - 6), self.speak_countdown))
                 if this_duration >= 30:  # Motivators only added if interval length is greater than 30 seconds
                     notification_threads.append(Timer(int(this_duration / 2), self.speak_mid_point))
-                    notification_threads.append(Timer(int(this_duration - 15), self.speak_transition, next_workout_type))
+                    notification_threads.append(Timer(int(this_duration - 15), self.speak_transition))
+#                    notification_threads.append(Timer(int(this_duration - 15), self.speak_transition,
+#                                                      next_workout_type))
                 if this_duration >= 120:  # Motivators only added if interval length is greater than 2 minutes seconds
                     first_quarter = int(this_duration / 4)
                     last_quarter = first_quarter * 3
@@ -282,8 +285,11 @@ class C25kSkill(MycroftSkill):
     def speak_last_quarter(self):
         self.speak_dialog('last_quarter', expect_response=False)
 
-    def speak_transition(self, interval_type):
-        self.speak_dialog('transitions', data={"value": interval_type}, expect_response=False)
+    #def speak_transition(self, interval_type):
+        # self.speak_dialog('transitions', data={"value": interval_type}, expect_response=False)
+    def speak_transition(self):
+        self.speak_dialog('transitions', data={"value": "change"}, expect_response=False)
+
 
     def speak_countdown(self):
         count_down = 5
